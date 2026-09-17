@@ -1,0 +1,162 @@
+{
+    "task_a_quadrants": [
+        {
+            "accuracy": 0.5663817663817664,
+            "balanced_accuracy": 0.4486074781047096,
+            "macro_f1": 0.4339585977467874,
+            "weighted_f1": 0.544650326111606,
+            "cohen_kappa": 0.3638575461583199,
+            "top_3_accuracy": 0.9811965811965812,
+            "fit_time_s": 1.37,
+            "inference_time_s": 0.027,
+            "model": "RandomForest"
+        },
+        {
+            "accuracy": 0.501994301994302,
+            "balanced_accuracy": 0.42981535479587646,
+            "macro_f1": 0.4315401674029394,
+            "weighted_f1": 0.49091276853800286,
+            "cohen_kappa": 0.27934814475148084,
+            "top_3_accuracy": 0.9669515669515669,
+            "fit_time_s": 7.05,
+            "inference_time_s": 0.0047,
+            "model": "MLP_NeuralNet"
+        },
+        {
+            "accuracy": 0.5378917378917379,
+            "balanced_accuracy": 0.4257725964319266,
+            "macro_f1": 0.4093754298779222,
+            "weighted_f1": 0.5162087800074023,
+            "cohen_kappa": 0.323925899536872,
+            "top_3_accuracy": 0.9566951566951567,
+            "fit_time_s": 0.17,
+            "inference_time_s": 0.0278,
+            "model": "ExtraTrees"
+        },
+        {
+            "accuracy": 0.41937321937321936,
+            "balanced_accuracy": 0.33374794399111946,
+            "macro_f1": 0.3149431286699786,
+            "weighted_f1": 0.3920681951863504,
+            "cohen_kappa": 0.14418962783737577,
+            "top_3_accuracy": 0.9037037037037037,
+            "fit_time_s": 0.06,
+            "inference_time_s": 0.002,
+            "model": "Ridge"
+        },
+        {
+            "accuracy": 0.42108262108262107,
+            "balanced_accuracy": 0.3353662916806823,
+            "macro_f1": 0.3144276336913565,
+            "weighted_f1": 0.39099143096806166,
+            "cohen_kappa": 0.14638565839053763,
+            "top_3_accuracy": 0.9133903133903134,
+            "fit_time_s": 1.67,
+            "inference_time_s": 0.0012,
+            "model": "LogisticRegression"
+        },
+        {
+            "accuracy": 0.2757834757834758,
+            "balanced_accuracy": 0.3119139840926147,
+            "macro_f1": 0.25993531976597406,
+            "weighted_f1": 0.2936068304908544,
+            "cohen_kappa": 0.06398389649714409,
+            "top_3_accuracy": 0.8142450142450143,
+            "fit_time_s": 0.02,
+            "inference_time_s": 0.0078,
+            "model": "NearestCentroid_Cosine"
+        }
+    ],
+    "task_b_cowen27": [
+        {
+            "accuracy": 0.30826210826210826,
+            "balanced_accuracy": 0.3084489283122045,
+            "macro_f1": 0.30278634037677404,
+            "weighted_f1": 0.30304805030794424,
+            "cohen_kappa": 0.28167230498574847,
+            "top_3_accuracy": 0.6512820512820513,
+            "top_5_accuracy": 0.7982905982905983,
+            "fit_time_s": 2.28,
+            "inference_time_s": 0.0699,
+            "model": "RandomForest"
+        },
+        {
+            "accuracy": 0.2792022792022792,
+            "balanced_accuracy": 0.2782396611094174,
+            "macro_f1": 0.27400217362815327,
+            "weighted_f1": 0.2745775213974961,
+            "cohen_kappa": 0.2513349057017351,
+            "top_3_accuracy": 0.6199430199430199,
+            "top_5_accuracy": 0.8028490028490028,
+            "fit_time_s": 24.06,
+            "inference_time_s": 0.0094,
+            "model": "MLP_NeuralNet"
+        },
+        {
+            "accuracy": 0.2603988603988604,
+            "balanced_accuracy": 0.2604800872434011,
+            "macro_f1": 0.2519585560355867,
+            "weighted_f1": 0.2523929677089807,
+            "cohen_kappa": 0.23198166457747682,
+            "top_3_accuracy": 0.5635327635327635,
+            "top_5_accuracy": 0.7435897435897436,
+            "fit_time_s": 0.27,
+            "inference_time_s": 0.0407,
+            "model": "ExtraTrees"
+        },
+        {
+            "accuracy": 0.1225071225071225,
+            "balanced_accuracy": 0.12329726447813306,
+            "macro_f1": 0.10427209448842364,
+            "weighted_f1": 0.10417039138385768,
+            "cohen_kappa": 0.0888517077245835,
+            "top_3_accuracy": 0.30142450142450145,
+            "top_5_accuracy": 0.47977207977207975,
+            "fit_time_s": 4.15,
+            "inference_time_s": 0.0017,
+            "model": "LogisticRegression"
+        },
+        {
+            "accuracy": 0.10484330484330484,
+            "balanced_accuracy": 0.10624506587851545,
+            "macro_f1": 0.08444875401282201,
+            "weighted_f1": 0.08417041034984975,
+            "cohen_kappa": 0.07064638683300684,
+            "top_3_accuracy": 0.28034188034188035,
+            "top_5_accuracy": 0.4170940170940171,
+            "fit_time_s": 0.05,
+            "inference_time_s": 0.002,
+            "model": "Ridge"
+        },
+        {
+            "accuracy": 0.05356125356125356,
+            "balanced_accuracy": 0.05345102631597459,
+            "macro_f1": 0.03823995079950709,
+            "weighted_f1": 0.038123944241890736,
+            "cohen_kappa": 0.01716771623756641,
+            "top_3_accuracy": 0.16866096866096866,
+            "top_5_accuracy": 0.26894586894586897,
+            "fit_time_s": 0.02,
+            "inference_time_s": 0.0055,
+            "model": "NearestCentroid_Cosine"
+        }
+    ],
+    "feature_importance": {
+        "by_band": {
+            "delta": 0.001545334562426068,
+            "theta": 0.0015395512292494863,
+            "alpha": 0.0015332674951999469,
+            "beta": 0.0014726139494075138,
+            "gamma": 0.0014929879688923135,
+            "ratio_beta_alpha": 0.0017643736653466275,
+            "other": 0.0022992756502981286
+        },
+        "by_region": {
+            "Prefrontal": 0.0020510531246021096,
+            "Frontal": 0.0020761343400987225,
+            "Temporal": 0.0022129254526256107,
+            "Parietal": 0.0021875741398164404,
+            "Occipital": 0.0024715594141748233
+        }
+    }
+}

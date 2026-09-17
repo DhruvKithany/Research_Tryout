@@ -1,0 +1,10 @@
+{
+    "frechet_distances": {
+        "Joy": 2405.314,
+        "Calmness": 1263.002,
+        "Anger": 401.602,
+        "Sadness": 116.882
+    },
+    "n_features": 462,
+    "n_classes_fitted": 27
+}

@@ -1,0 +1,14 @@
+{
+    "rsa": {
+        "pearson_r": 0.14202901397359388,
+        "pearson_p": 0.007700123368269734,
+        "spearman_rho": 0.14308463551918454,
+        "spearman_p": 0.007253931561961366
+    },
+    "intrinsic_dimensionality": {
+        "two_nn_dimension": 13.41910220074868,
+        "pca_var_80pct": 5,
+        "pca_var_90pct": 9,
+        "pca_var_95pct": 14
+    }
+}
