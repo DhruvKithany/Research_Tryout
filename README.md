@@ -5,21 +5,21 @@
 [![Code Style: Clean](https://img.shields.io/badge/code%20style-modular-green.svg)](https://github.com/)
 [![Tests](https://img.shields.io/badge/tests-15%20passed-success.svg)](tests/)
 
-**Author:** Dhruv Kithany  
-**Institution:** University of Wisconsin–Madison  
-**Application:** Exploratory Research Exercise — Computational Neuroengineering, Machine Learning & Geometric Data Analysis (Bhaskar Lab)  
-**Dataset:** [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (*IEEE Access*, 2025)
+Author: Dhruv Kithany  
+Institution: University of Wisconsin–Madison  
+Application: Exploratory Research Exercise — Computational Neuroengineering, Machine Learning & Geometric Data Analysis (Bhaskar Lab)  
+Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (*IEEE Access*, 2025)
 
 ---
 
 ## Quick Summary/Overview
 
-Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by Cowen & Keltner (*PNAS*, 2017) demonstrated that emotion is best represented as a **continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties**. 
+Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by Cowen & Keltner (*PNAS*, 2017) demonstrated that emotion is best represented as a continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties. 
 
 This research project investigates a central question in computational neuroengineering:  
-> **Does the geometric and topological manifold of human scalp electroencephalography (EEG) reflect the high-dimensional structure of emotional experience, and can fine-grained affective states be reliably decoded across unseen human subjects?**
+> Does the geometric and topological manifold of human scalp electroencephalography (EEG) reflect the high-dimensional structure of emotional experience, and can fine-grained affective states be reliably decoded across unseen human subjects?
 
-Using the newly released **EEGEmotions-27** dataset (88 participants, 14-channel 256Hz EEG recorded during evocative video elicitation), this repository implements a comprehensive, end-to-end computational neuroengineering framework spanning **neurobiological topography**, **manifold learning & representational similarity analysis (RSA)**, **rigorous subject-independent decoding benchmarks**, and **class-conditional generative modeling**.
+Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256Hz EEG recorded during evocative video elicitation), this repository implements a comprehensive, end-to-end computational neuroengineering framework spanning neurobiological topography, manifold learning & representational similarity analysis (RSA), rigorous subject-independent decoding benchmarks, and class-conditional generative modeling.
 
 ```
                        +-------------------------------------------------------------+
@@ -59,26 +59,26 @@ Using the newly released **EEGEmotions-27** dataset (88 participants, 14-channel
 
 ## Key Findings
 
-1. **Neural Geometry Correlates with Psychological Affective Space ($p = 0.007$)**:
-   - Using **Representational Similarity Analysis (RSA)**, we computed pairwise centroid distances between all 27 emotion classes in the 462-dimensional neural feature space and compared them against normative Valence-Arousal coordinates.
-   - Upper-triangular distance correlation revealed a **statistically significant alignment** ($r = 0.1420$, $p = 7.70 \times 10^{-3}$; Spearman $\rho = 0.1431$, $p = 7.25 \times 10^{-3}$), demonstrating that the physical brain manifold preserves topological proximity of human emotional experiences.
+1. Neural Geometry Correlates with Psychological Affective Space (p = 0.007):
+   - Using Representational Similarity Analysis (RSA), we computed pairwise centroid distances between all 27 emotion classes in the 462-dimensional neural feature space and compared them against normative Valence-Arousal coordinates.
+   - Upper-triangular distance correlation revealed a statistically significant alignment (r = 0.1420, p = 7.70e-3; Spearman rho = 0.1431, p = 7.25e-3), demonstrating that the physical brain manifold preserves topological proximity of human emotional experiences.
 
-2. **Intrinsic Manifold Dimensionality**:
-   - Applying the **Two-NN intrinsic dimension estimator** (Facco et al., *Sci. Rep.* 2017) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is **$d \approx 13.4$**.
+2. Intrinsic Manifold Dimensionality:
+   - Applying the Two-NN intrinsic dimension estimator (Facco et al., *Sci. Rep.* 2017) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is d ≈ 13.4.
    - PCA cumulative variance shows that 5 orthogonal components explain 80% of feature variance, 9 explain 90%, and 14 components explain 95%—closely reflecting the 14 cortical electrode channels.
 
-3. **Frontal Alpha Asymmetry (FAA) Reflects Motivational Direction**:
-   - Quantified prefrontal hemispheric lateralization: $\text{FAA} = \ln(\text{Alpha}_{\text{AF4}}) - \ln(\text{Alpha}_{\text{AF3}})$.
+3. Frontal Alpha Asymmetry (FAA) Reflects Motivational Direction:
+   - Quantified prefrontal hemispheric lateralization: FAA = ln(Alpha_AF4) - ln(Alpha_AF3)
    - Positive FAA (relative left prefrontal dominance, indexing approach motivation and appetitive drive) characterizes emotions like *Joy*, *Sexual Desire*, *Excitement*, and *Craving*.
    - Negative FAA (relative right prefrontal dominance, indexing withdrawal motivation and behavioral inhibition) characterizes emotions like *Sadness*, *Fear*, *Horror*, and *Disgust*.
 
-4. **Decoding Benchmark on Strict Subject-Independent Splits (Zero Data Leakage)**:
-   - Evaluated under strict **Leave-Subjects-Out (Subject-Independent Group Split)** across 74 training subjects and 14 held-out test subjects:
-     - **4-Class Valence-Arousal Quadrant Decoding**: **56.64% accuracy** (chance: 25.0%, Top-3: **98.12%**).
-     - **27-Class Fine-Grained Emotion Decoding**: **30.83% Top-1 accuracy**, **65.13% Top-3 accuracy**, and **79.83% Top-5 accuracy**! This represents an **8.3-fold increase over the 3.70% random chance baseline**.
+4. Decoding Benchmark on Strict Subject-Independent Splits (Zero Data Leakage):
+   - Evaluated under strict Leave-Subjects-Out (Subject-Independent Group Split) across 74 training subjects and 14 held-out test subjects:
+     - 4-Class Valence-Arousal Quadrant Decoding: 56.64% accuracy (chance: 25.0%, Top-3: 98.12%).
+     - 27-Class Fine-Grained Emotion Decoding: 30.83% Top-1 accuracy, 65.13% Top-3 accuracy, and 79.83% Top-5 accuracy! This represents an 8.3-fold increase over the 3.70% random chance baseline.
 
-5. **Class-Conditional Synthetic EEG Generation**:
-   - Implemented an analytical generative model with **Ledoit-Wolf covariance shrinkage** that models $p(X \mid y = c) = \mathcal{N}(\mu_c, \Sigma_c)$, enabling synthetic signal synthesis with low Fréchet distances (FD = 116.88 for Sadness, FD = 401.60 for Anger).
+5. Class-Conditional Synthetic EEG Generation:
+   - Implemented an analytical generative model with Ledoit-Wolf covariance shrinkage that models p(X | y = c) = N(mu_c, Sigma_c), enabling synthetic signal synthesis with low Fréchet distances (FD = 116.88 for Sadness, FD = 401.60 for Anger).
 
 ---
 
@@ -87,61 +87,61 @@ Using the newly released **EEGEmotions-27** dataset (88 participants, 14-channel
 All models were evaluated under strict subject-independent splitting (`GroupShuffleSplit`, random state 42) ensuring that no subject's time-series or segments appear in both training and testing.
 
 ### Task A: 4-Class Valence-Arousal Quadrants (Chance = 25.0%)
-| Model | Test Accuracy | Balanced Acc | Macro F1 | Weighted F1 | Cohen's $\kappa$ | Top-3 Acc | Fit Time (s) |
+| Model | Test Accuracy | Balanced Acc | Macro F1 | Weighted F1 | Cohen's Kappa | Top-3 Acc | Fit Time (s) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Random Forest** | **56.64%** | **44.86%** | **0.4340** | **0.5446** | **0.3639** | **98.12%** | 5.97s |
-| **Extra Trees** | **53.79%** | 42.58% | 0.4094 | 0.5162 | 0.3239 | 95.67% | 0.61s |
-| **Deep MLP Neural Net** | **50.20%** | 42.98% | 0.4315 | 0.4909 | 0.2793 | 96.70% | 20.45s |
-| **Logistic Regression (L2)**| 42.11% | 33.54% | 0.3144 | 0.3910 | 0.1464 | 91.34% | 6.31s |
-| **Ridge Classifier** | 41.94% | 33.37% | 0.3149 | 0.3921 | 0.1442 | 90.37% | 0.17s |
-| **Nearest Centroid (Cosine)**| 27.58% | 31.19% | 0.2599 | 0.2936 | 0.0640 | 81.42% | 0.10s |
+| Random Forest | 56.64% | 44.86% | 0.4340 | 0.5446 | 0.3639 | 98.12% | 5.97s |
+| Extra Trees | 53.79% | 42.58% | 0.4094 | 0.5162 | 0.3239 | 95.67% | 0.61s |
+| Deep MLP Neural Net | 50.20% | 42.98% | 0.4315 | 0.4909 | 0.2793 | 96.70% | 20.45s |
+| Logistic Regression (L2)| 42.11% | 33.54% | 0.3144 | 0.3910 | 0.1464 | 91.34% | 6.31s |
+| Ridge Classifier | 41.94% | 33.37% | 0.3149 | 0.3921 | 0.1442 | 90.37% | 0.17s |
+| Nearest Centroid (Cosine)| 27.58% | 31.19% | 0.2599 | 0.2936 | 0.0640 | 81.42% | 0.10s |
 
 ### Task B: 27-Class Fine-Grained Cowen Emotions (Chance = 3.70%)
-| Model | Top-1 Acc | Top-3 Acc | Top-5 Acc | Balanced Acc | Macro F1 | Cohen's $\kappa$ | Fit Time (s) |
+| Model | Top-1 Acc | Top-3 Acc | Top-5 Acc | Balanced Acc | Macro F1 | Cohen's Kappa | Fit Time (s) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Random Forest** | **30.83%** | **65.13%** | **79.83%** | **30.84%** | **0.3028** | **0.2817** | 8.80s |
-| **Deep MLP Neural Net** | **27.92%** | **61.99%** | **80.28%** | 27.82% | 0.2740 | 0.2513 | 54.47s |
-| **Extra Trees** | **26.04%** | 56.35% | 74.36% | 26.05% | 0.2520 | 0.2320 | 1.05s |
-| **Logistic Regression (L2)**| 12.25% | 30.14% | 47.98% | 12.33% | 0.1043 | 0.0889 | 17.48s |
-| **Ridge Classifier** | 10.48% | 28.03% | 41.71% | 10.62% | 0.0844 | 0.0706 | 0.16s |
-| **Nearest Centroid (Cosine)**| 5.36% | 16.87% | 26.89% | 5.35% | 0.0382 | 0.0172 | 0.07s |
+| Random Forest | 30.83% | 65.13% | 79.83% | 30.84% | 0.3028 | 0.2817 | 8.80s |
+| Deep MLP Neural Net | 27.92% | 61.99% | 80.28% | 27.82% | 0.2740 | 0.2513 | 54.47s |
+| Extra Trees | 26.04% | 56.35% | 74.36% | 26.05% | 0.2520 | 0.2320 | 1.05s |
+| Logistic Regression (L2)| 12.25% | 30.14% | 47.98% | 12.33% | 0.1043 | 0.0889 | 17.48s |
+| Ridge Classifier | 10.48% | 28.03% | 41.71% | 10.62% | 0.0844 | 0.0706 | 0.16s |
+| Nearest Centroid (Cosine)| 5.36% | 16.87% | 26.89% | 5.35% | 0.0382 | 0.0172 | 0.07s |
 
 ---
 
 ## Neurobiological & Geometric Figures
 
 ### 1. Frontal Alpha Asymmetry (FAA) Across 27 Emotional States
-Hemispheric lateralization at prefrontal sites ($\text{AF4} - \text{AF3}$) ranks emotions along the approach-withdrawal axis:
+Hemispheric lateralization at prefrontal sites (AF4 - AF3) ranks emotions along the approach-withdrawal axis:
 ![Frontal Alpha Asymmetry](figures/01_frontal_alpha_asymmetry.png)
 
 ### 2. Multi-Band Scalp Topographies (10-20 System)
 Interpolated 2D scalp power maps across Delta (1-4 Hz), Theta (4-8 Hz), Alpha (8-13 Hz), Beta (13-30 Hz), and Gamma (30-45 Hz):
-* **Joy (High Valence, High Arousal):**
+* Joy (High Valence, High Arousal):
   ![Topomap Joy](figures/01_topomap_multiband_joy_hvha.png)
-* **Calmness (High Valence, Low Arousal):**
+* Calmness (High Valence, Low Arousal):
   ![Topomap Calmness](figures/01_topomap_multiband_calmness_hvla.png)
-* **Anger (Low Valence, High Arousal):**
+* Anger (Low Valence, High Arousal):
   ![Topomap Anger](figures/01_topomap_multiband_anger_lvha.png)
-* **Sadness (Low Valence, Low Arousal):**
+* Sadness (Low Valence, Low Arousal):
   ![Topomap Sadness](figures/01_topomap_multiband_sadness_lvla.png)
 
 ### 3. Manifold Learning & Representational Geometry
-* **Diffusion / Laplacian Eigenmaps:**
+* Diffusion / Laplacian Eigenmaps:
   Low-dimensional non-linear diffusion coordinates revealing the grouping of affective states:
   ![Diffusion Manifold](figures/02_manifold_diffusion_quadrants.png)
 
-* **Pairwise Neural Distance Matrix (27 Emotions):**
+* Pairwise Neural Distance Matrix (27 Emotions):
   Euclidean distance heatmap between emotion centroids in 462-dimensional space:
   ![Distance Matrix](figures/02_neural_emotion_distance_matrix.png)
 
-* **Hierarchical Ward Dendrogram:**
+* Hierarchical Ward Dendrogram:
   Brain state hierarchical taxonomy illustrating which emotional states share neural activation patterns:
   ![Hierarchical Dendrogram](figures/02_emotion_hierarchical_dendrogram.png)
 
 ### 4. Decoding Confusion Matrices
-* **Valence-Arousal Quadrants:**
+* Valence-Arousal Quadrants:
   ![Confusion Matrix Quadrants](figures/03_confusion_matrix_quadrants.png)
-* **27 Fine-Grained Emotions:**
+* 27 Fine-Grained Emotions:
   ![Confusion Matrix 27 Emotions](figures/03_confusion_matrix_cowen27.png)
 
 ### 5. Neuro-Feature Importance
@@ -269,11 +269,11 @@ jupyter notebook notebooks/01_exploratory_eeg_affect_walkthrough.ipynb
 
 ## References
 
-1. **Dataset Paper:** Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEGEmotions-27: A Large-Scale EEG Dataset Annotated With 27 Fine-Grained Emotion Labels*. **IEEE Access**, 13, 176915–176932. [DOI: 10.1109/ACCESS.2025.3620677](https://doi.org/10.1109/ACCESS.2025.3620677)
-2. **Review Paper:** Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEG-Based Emotion Recognition: A Review and Emerging Paths*. **IEEE Access**, 13, 165037–165060. [DOI: 10.1109/ACCESS.2025.3610918](https://doi.org/10.1109/ACCESS.2025.3610918)
-3. **Affective Geometry:** Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. **Proceedings of the National Academy of Sciences (PNAS)**, 114(38), E7900–E7909.
-4. **Frontal Asymmetry:** Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. **Brain and Cognition**, 20(1), 125–151.
-5. **Intrinsic Dimensionality:** Facco, E., d’Errico, M., Rodriguez, A., & Laio, A. (2017). *Estimating the intrinsic dimension of datasets by a minimal neighborhood information*. **Scientific Reports**, 7(1), 12140.
+1. Dataset Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEGEmotions-27: A Large-Scale EEG Dataset Annotated With 27 Fine-Grained Emotion Labels*. IEEE Access, 13, 176915–176932. [DOI: 10.1109/ACCESS.2025.3620677](https://doi.org/10.1109/ACCESS.2025.3620677)
+2. Review Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEG-Based Emotion Recognition: A Review and Emerging Paths*. IEEE Access, 13, 165037–165060. [DOI: 10.1109/ACCESS.2025.3610918](https://doi.org/10.1109/ACCESS.2025.3610918)
+3. Affective Geometry: Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. Proceedings of the National Academy of Sciences (PNAS), 114(38), E7900–E7909.
+4. Frontal Asymmetry: Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. Brain and Cognition, 20(1), 125–151.
+5. Intrinsic Dimensionality: Facco, E., d’Errico, M., Rodriguez, A., & Laio, A. (2017). *Estimating the intrinsic dimension of datasets by a minimal neighborhood information*. Scientific Reports, 7(1), 12140.
 
 ---
 
