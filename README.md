@@ -60,39 +60,39 @@ Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256
 ## Repo Diagram (What is actually included) (Key--> rendered quatro pdf (as a formal memo in the structure I have done in the past) is listed as "index.pdf")
 
 ```
-                       +-----------------------------------------------+
-                       |       Research Repository Deliverables        |
-                       +-----------------------------------------------+
-                                               |
-              +--------------------------------+--------------------------------+
-              |                                |                                |
-              v                                v                                v
-+---------------------------+    +---------------------------+    +---------------------------+
-|  Research Memo & Report   |    |    Core Python Packages    |    | Reproduction Script |
-|         (memos/)          |    |       (eeg_affect/)       |    |   (scripts/ & run_all)    |
-+---------------------------+    +---------------------------+    +---------------------------+
-| - index.pdf (formal memo) |    | - data/: loaders & splits |    | - 01_neurobiology         |
-| - index.html (web html version)|    | - features/: PSD, FAA, Hjo|    | - 02_manifold_rsa         |
-| - Quarto publication src  |    | - geometry/: Manifold, RSA|    | - 03_decoding_bench       |
-| - Math proofs & theory    |    | - models/: classifiers    |    | - 04_synthetic_gen        |
-| - Academic bibliography   |    | - generative/: covariance |    | - Master run_all.py (67s) |
-+---------------------------+    +---------------------------+    +---------------------------+
-              |                                |                                |
-              +--------------------------------+--------------------------------+
-                                               |
-              +--------------------------------+--------------------------------+
-              |                                |                                |
-              v                                v                                v
-+---------------------------+    +---------------------------+    +---------------------------+
-|  Walkthrough  |    | Figures & Benchmark Stats |    |   Automated Tests    |
-|       (notebooks/)        |    |        (figures/)         |    |         (tests/)          |
-+---------------------------+    +---------------------------+    +---------------------------+
-| - 01_exploratory_walkthru |    | - 14 publication 300-DPI  |    | - tests/run_tests.py      |
-| - End-to-end tutorial demo|    |   high-res vector plots   |    | - 15 unit tests pass      |
-| - In-browser topomaps     |    | - Scalp topomaps & PSDs   |    | - Math & shape assertions |
-| - Live FAA inspection     |    | - Manifold 2D & RSA plots |    | - Zero external test deps |
-| - Manifold 2D projections |    | - 3 JSON benchmark logs   |    | - Verified 100% green     |
-+---------------------------+    +---------------------------+    +---------------------------+
+                                    +-------------------------------------+
+                                    |          Key Repo Aspects           |
+                                    +-------------------------------------+
+                                                       |
+                 +-------------------------------------+-------------------------------------+
+                 |                                     |                                     |
+                 v                                     v                                     v
++---------------------------------+   +---------------------------------+   +---------------------------------+
+|     Research Memo & Report      |   |      Core Python Packages       |   |       Reproduction Script       |
+|            (memos/)             |   |          (eeg_affect/)          |   |      (scripts/ & run_all)       |
++---------------------------------+   +---------------------------------+   +---------------------------------+
+| - index.pdf (formal memo)       |   | - data/: loaders & splits       |   | - 01_neurobiology               |
+| - index.html (web html version) |   | - features/: PSD, FAA, Hjo      |   | - 02_manifold_rsa               |
+| - Quarto publication src        |   | - geometry/: Manifold, RSA      |   | - 03_decoding_bench             |
+| - Math proofs & theory          |   | - models/: classifiers          |   | - 04_synthetic_gen              |
+| - Academic bibliography         |   | - generative/: covariance       |   | - Master run_all.py (67s)       |
++---------------------------------+   +---------------------------------+   +---------------------------------+
+                 |                                     |                                     |
+                 +-------------------------------------+-------------------------------------+
+                                                       |
+                 +-------------------------------------+-------------------------------------+
+                 |                                     |                                     |
+                 v                                     v                                     v
++---------------------------------+   +---------------------------------+   +---------------------------------+
+|           Walkthrough           |   |    Figures & Benchmark Stats    |   |         Automated Tests         |
+|          (notebooks/)           |   |           (figures/)            |   |            (tests/)             |
++---------------------------------+   +---------------------------------+   +---------------------------------+
+| - 01_exploratory_walkthru       |   | - 14 publication 300-DPI        |   | - tests/run_tests.py            |
+| - End-to-end tutorial demo      |   |   high-res vector plots         |   | - 15 unit tests pass            |
+| - In-browser topomaps           |   | - Scalp topomaps & PSDs         |   | - Math & shape assertions       |
+| - Live FAA inspection           |   | - Manifold 2D & RSA plots       |   | - Zero external test deps       |
+| - Manifold 2D projections       |   | - 3 JSON benchmark logs         |   | - Verified 100% green           |
++---------------------------------+   +---------------------------------+   +---------------------------------+
 ```
 
 Here is an overview of what is provided across each module:
