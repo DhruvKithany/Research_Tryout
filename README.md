@@ -6,8 +6,8 @@
 [![Tests](https://img.shields.io/badge/tests-15%20passed-success.svg)](tests/)
 
 Author: Dhruv Kithany  
-Institution: University of Wisconsin–Madison  
-Application: Exploratory Research Exercise — Computational Neuroengineering, Machine Learning & Geometric Data Analysis (Bhaskar Lab)  
+Institution: University of Wisconsin-Madison  
+Application: Exploratory Research Exercise: Computational Neuroengineering, Machine Learning & Geometric Data Analysis (Bhaskar Lab)  
 Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (*IEEE Access*, 2025)
 
 ---
@@ -65,7 +65,7 @@ Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256
 
 2. Intrinsic Manifold Dimensionality:
    - Applying the Two-NN intrinsic dimension estimator (Facco et al., *Sci. Rep.* 2017) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is d ≈ 13.4.
-   - PCA cumulative variance shows that 5 orthogonal components explain 80% of feature variance, 9 explain 90%, and 14 components explain 95%—closely reflecting the 14 cortical electrode channels.
+   - PCA cumulative variance shows that 5 orthogonal components explain 80% of feature variance, 9 explain 90%, and 14 components explain 95%, closely reflecting the 14 cortical electrode channels.
 
 3. Frontal Alpha Asymmetry (FAA) Reflects Motivational Direction:
    - Quantified prefrontal hemispheric lateralization: FAA = ln(Alpha_AF4) - ln(Alpha_AF3)
@@ -269,10 +269,10 @@ jupyter notebook notebooks/01_exploratory_eeg_affect_walkthrough.ipynb
 
 ## References
 
-1. Dataset Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEGEmotions-27: A Large-Scale EEG Dataset Annotated With 27 Fine-Grained Emotion Labels*. IEEE Access, 13, 176915–176932. [DOI: 10.1109/ACCESS.2025.3620677](https://doi.org/10.1109/ACCESS.2025.3620677)
-2. Review Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEG-Based Emotion Recognition: A Review and Emerging Paths*. IEEE Access, 13, 165037–165060. [DOI: 10.1109/ACCESS.2025.3610918](https://doi.org/10.1109/ACCESS.2025.3610918)
-3. Affective Geometry: Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. Proceedings of the National Academy of Sciences (PNAS), 114(38), E7900–E7909.
-4. Frontal Asymmetry: Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. Brain and Cognition, 20(1), 125–151.
+1. Dataset Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEGEmotions-27: A Large-Scale EEG Dataset Annotated With 27 Fine-Grained Emotion Labels*. IEEE Access, 13, 176915-176932. [DOI: 10.1109/ACCESS.2025.3620677](https://doi.org/10.1109/ACCESS.2025.3620677)
+2. Review Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEG-Based Emotion Recognition: A Review and Emerging Paths*. IEEE Access, 13, 165037-165060. [DOI: 10.1109/ACCESS.2025.3610918](https://doi.org/10.1109/ACCESS.2025.3610918)
+3. Affective Geometry: Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. Proceedings of the National Academy of Sciences (PNAS), 114(38), E7900-E7909.
+4. Frontal Asymmetry: Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. Brain and Cognition, 20(1), 125-151.
 5. Intrinsic Dimensionality: Facco, E., d’Errico, M., Rodriguez, A., & Laio, A. (2017). *Estimating the intrinsic dimension of datasets by a minimal neighborhood information*. Scientific Reports, 7(1), 12140.
 
 ---
