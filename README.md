@@ -57,6 +57,66 @@ Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256
 
 ---
 
+## Repo Diagram (What is actually included) (Key--> rendered quatro pdf (as a formal memo in the structure I have done in the past) is listed as "index.pdf")
+
+```
+                       +-----------------------------------------------+
+                       |       Research Repository Deliverables        |
+                       +-----------------------------------------------+
+                                               |
+              +--------------------------------+--------------------------------+
+              |                                |                                |
+              v                                v                                v
++---------------------------+    +---------------------------+    +---------------------------+
+|  Research Memo & Report   |    |    Core Python Packages    |    | Reproduction Script |
+|         (memos/)          |    |       (eeg_affect/)       |    |   (scripts/ & run_all)    |
++---------------------------+    +---------------------------+    +---------------------------+
+| - index.pdf (formal memo) |    | - data/: loaders & splits |    | - 01_neurobiology         |
+| - index.html (web html version)|    | - features/: PSD, FAA, Hjo|    | - 02_manifold_rsa         |
+| - Quarto publication src  |    | - geometry/: Manifold, RSA|    | - 03_decoding_bench       |
+| - Math proofs & theory    |    | - models/: classifiers    |    | - 04_synthetic_gen        |
+| - Academic bibliography   |    | - generative/: covariance |    | - Master run_all.py (67s) |
++---------------------------+    +---------------------------+    +---------------------------+
+              |                                |                                |
+              +--------------------------------+--------------------------------+
+                                               |
+              +--------------------------------+--------------------------------+
+              |                                |                                |
+              v                                v                                v
++---------------------------+    +---------------------------+    +---------------------------+
+|  Walkthrough  |    | Figures & Benchmark Stats |    |   Automated Tests    |
+|       (notebooks/)        |    |        (figures/)         |    |         (tests/)          |
++---------------------------+    +---------------------------+    +---------------------------+
+| - 01_exploratory_walkthru |    | - 14 publication 300-DPI  |    | - tests/run_tests.py      |
+| - End-to-end tutorial demo|    |   high-res vector plots   |    | - 15 unit tests pass      |
+| - In-browser topomaps     |    | - Scalp topomaps & PSDs   |    | - Math & shape assertions |
+| - Live FAA inspection     |    | - Manifold 2D & RSA plots |    | - Zero external test deps |
+| - Manifold 2D projections |    | - 3 JSON benchmark logs   |    | - Verified 100% green     |
++---------------------------+    +---------------------------+    +---------------------------+
+```
+
+Here is an overview of what is provided across each module:
+
+* Research Memo and PDF Report (memos/):
+  A full research memo compiled with Quarto to both PDF and HTML format at memos/2026-09-07-eeg-affect-manifold-geometry/index.pdf (and index.html). It details the mathematical foundations, neurobiology background, manifold geometry analyses, and decoding benchmarks with full academic citations.
+
+* Core Python Package (eeg_affect/):
+  A modular library containing data loaders, preprocessors, spectral and asymmetry feature extraction, geometric manifold algorithms (Diffusion Maps, PCA, Two-NN, RSA), classification models, and class-conditional synthetic EEG generators.
+
+* Standalone Reproduction Scripts (scripts/ and run_all.py):
+  Four clean scripts (scripts/01 to 04) covering each experimental direction, plus a master runner (run_all.py) that executes the entire four-stage pipeline end-to-end in about 67 seconds.
+
+* Interactive Jupyter Walkthrough (notebooks/):
+  A step-by-step tutorial notebook (notebooks/01_exploratory_eeg_affect_walkthrough.ipynb) demonstrating dataset loading, Frontal Alpha Asymmetry calculations, 2D manifold embeddings, and synthetic EEG feature generation.
+
+* Publication Figures and Benchmark Metrics (figures/):
+  All 17 generated artifacts (14 high-resolution 300-DPI figures and 3 JSON metric summaries) produced directly by the reproduction pipeline.
+
+* Automated Unit Test Suite (tests/):
+  Fifteen unit tests (run via python tests/run_tests.py) covering data loading, feature engineering, geometry algorithms, and decoding models with zero external test runner dependencies.
+
+---
+
 ## Key Findings
 
 1. Neural Geometry Correlates with Psychological Affective Space (p = 0.007):
