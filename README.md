@@ -12,7 +12,7 @@
 
 ---
 
-## 🔬 Executive Summary
+## Quick Summary/Overview
 
 Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by Cowen & Keltner (*PNAS*, 2017) demonstrated that emotion is best represented as a **continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties**. 
 
