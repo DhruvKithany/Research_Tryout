@@ -14,12 +14,13 @@ Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (
 
 ## Quick Summary/Overview
 
-Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by [Cowen & Keltner (*PNAS*, 2017)](https://doi.org/10.1073/pnas.1702247114) demonstrated that emotion is best represented as a continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties. 
+Human emotions are complex. Classical psychology debated whether emotions fit into simple separate boxes (like 6 basic emotions) or continuous 2D axes (like Valence and Arousal). Recent work by [Cowen & Keltner (PNAS, 2017)](https://doi.org/10.1073/pnas.1702247114) showed that emotions actually form a continuous, high-dimensional space spanning 27 distinct categories.
 
-This research project investigates a central question in computational neuroengineering:  
-> Does the geometric and topological manifold of human scalp electroencephalography (EEG) reflect the high-dimensional structure of emotional experience, and can fine-grained affective states be reliably decoded across unseen human subjects?
+This project investigates a central question:  
+> Does the geometric manifold of human scalp EEG reflect the high-dimensional structure of emotional experience, and can fine-grained affective states be decoded across unseen human subjects?
 
-Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256Hz EEG recorded during evocative video elicitation), this repository implements a comprehensive, end-to-end computational neuroengineering framework spanning neurobiological topography, manifold learning & representational similarity analysis (RSA), rigorous subject-independent decoding benchmarks, and class-conditional generative modeling.
+Using the newly released EEGEmotions-27 dataset (88 participants, 14 channels at 128 Hz recorded during video trials), this repository implements an end-to-end pipeline covering signal processing, manifold learning, Representational Similarity Analysis (RSA), subject-independent decoding benchmarks, and class-conditional generative models.
+
 
 ```
          +---------------------------------------------+
@@ -122,25 +123,26 @@ Here is an overview of what is provided across each module:
 ## Key Findings
 
 1. Neural Geometry Correlates with Psychological Affective Space (p = 0.007):
-   - Using Representational Similarity Analysis (RSA), we computed pairwise centroid distances between all 27 emotion classes in the 462-dimensional neural feature space and compared them against normative Valence-Arousal coordinates.
-   - Upper-triangular distance correlation revealed a statistically significant alignment (r = 0.1420, p = 7.70e-3; Spearman rho = 0.1431, p = 7.25e-3), demonstrating that the physical brain manifold preserves topological proximity of human emotional experiences.
+   - Using Representational Similarity Analysis (RSA), we computed pairwise centroid distances between all 27 emotion classes in the 462-dimensional feature space and compared them with normative Valence-Arousal coordinates.
+   - Distance correlation revealed a statistically significant alignment (r = 0.1420, p = 7.70e-3; Spearman rho = 0.1431, p = 7.25e-3). This shows that brain wave feature distances preserve the topological layout of human emotional experiences.
 
 2. Intrinsic Manifold Dimensionality:
-   - Applying the Two-NN intrinsic dimension estimator ([Facco et al., *Sci. Rep.* 2017](https://doi.org/10.1038/s41598-017-11873-y)) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is d ≈ 13.4.
-   - PCA cumulative variance shows that 5 orthogonal components explain 80% of feature variance, 9 explain 90%, and 14 components explain 95%, closely reflecting the 14 cortical electrode channels.
+   - Applying the Two-NN algorithm ([Facco et al., Sci. Rep. 2017](https://doi.org/10.1038/s41598-017-11873-y)) showed that the true intrinsic dimensionality of the EEG affective manifold is d ≈ 13.4.
+   - Roughly 97% of the 462 ambient features are redundant or noise. PCA variance shows that 5 components capture 80% variance, 9 capture 90%, and 14 capture 95%, matching the 14 physical electrodes.
 
 3. Frontal Alpha Asymmetry (FAA) Reflects Motivational Direction:
-   - Quantified prefrontal hemispheric lateralization: FAA = ln(Alpha_AF4) - ln(Alpha_AF3)
-   - Positive FAA (relative left prefrontal dominance, indexing approach motivation and appetitive drive) characterizes emotions like *Joy*, *Sexual Desire*, *Excitement*, and *Craving*.
-   - Negative FAA (relative right prefrontal dominance, indexing withdrawal motivation and behavioral inhibition) characterizes emotions like *Sadness*, *Fear*, *Horror*, and *Disgust*.
+   - Quantified prefrontal lateralization via the alpha paradox: FAA = ln(Alpha_AF4) - ln(Alpha_AF3). When brain regions activate, alpha power drops.
+   - Positive FAA indicates left prefrontal activation (approach motivation, positive valence) for emotions like Joy, Excitement, and Craving.
+   - Negative FAA indicates right prefrontal activation (avoidance motivation, negative valence) for emotions like Sadness, Fear, and Disgust.
 
 4. Decoding Benchmark on Strict Subject-Independent Splits (Zero Data Leakage):
-   - Evaluated under strict Leave-Subjects-Out (Subject-Independent Group Split) across 74 training subjects and 14 held-out test subjects:
-     - 4-Class Valence-Arousal Quadrant Decoding: 56.64% accuracy (chance: 25.0%, Top-3: 98.12%).
-     - 27-Class Fine-Grained Emotion Decoding: 30.83% Top-1 accuracy, 65.13% Top-3 accuracy, and 79.83% Top-5 accuracy! This represents an 8.3-fold increase over the 3.70% random chance baseline.
+   - Evaluated under strict Leave-Subjects-Out (GroupKFold) across 74 training subjects and 14 unseen holdout subjects:
+     - 4-Class Quadrant Decoding: Random Forest hits 56.64% accuracy (chance: 25.0%, Top-3: 98.12%).
+     - 27-Class Emotion Decoding: Random Forest achieves 30.83% Top-1 accuracy, 65.13% Top-3 accuracy, and 79.83% Top-5 accuracy (an 8.3-fold increase over the 3.70% random chance baseline).
 
 5. Class-Conditional Synthetic EEG Generation:
-   - Implemented an analytical generative model with Ledoit-Wolf covariance shrinkage that models p(X | y = c) = N(mu_c, Sigma_c), enabling synthetic signal synthesis with low Fréchet distances (FD = 116.88 for Sadness, FD = 401.60 for Anger).
+   - Implemented a generative model with Ledoit-Wolf covariance shrinkage modeling p(X | y = c) = N(mu_c, Sigma_c). This fixes sample covariance singularity in 462D and enables synthetic trial sampling with low Frechet distances (FD = 116.88 for Sadness, FD = 401.60 for Anger).
+
 
 ---
 
