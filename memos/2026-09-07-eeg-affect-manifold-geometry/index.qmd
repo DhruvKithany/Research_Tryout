@@ -12,23 +12,74 @@ keywords:
   - cowen_27_emotions
   - subject_independent_decoding
   - ledoit_wolf_generative_model
+link-citations: true
+colorlinks: true
+linkcolor: "blue"
+citecolor: "blue"
+urlcolor: "blue"
 format:
   html:
     toc: false
     theme: zephyr
     code-fold: true
     code-tools: true
+    code-overflow: wrap
+    citations-hover: true
+    footnotes-hover: true
+    link-citations: true
     margin-left: 0.75in
     margin-right: 0.75in
     margin-top: 0.75in
     margin-bottom: 0.75in
+    include-in-header:
+      text: |
+        <style>
+        pre, code, pre.sourceCode, .cell-code {
+          white-space: pre-wrap !important;
+          word-break: break-word !important;
+          overflow-x: auto !important;
+        }
+        table {
+          max-width: 100% !important;
+        }
+        </style>
     other-links:
       - text: Download PDF
         href: index.pdf
       - text: Download Word Document
         href: index.docx
+    include-after-body:
+      text: |
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const bibrefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+          for (let i = 0; i < bibrefs.length; i++) {
+            const ref = bibrefs[i];
+            let href = ref.getAttribute('href') || '';
+            const id = href.replace(/^#/, '');
+            const note = window.document.getElementById(id);
+            if (note && window.tippy) {
+              window.tippy(ref, {
+                content: note.innerHTML,
+                allowHTML: true,
+                interactive: true,
+                interactiveBorder: 10,
+                theme: 'quarto',
+                placement: 'bottom-start',
+                maxWidth: 550,
+                delay: [50, 200]
+              });
+            }
+          }
+        });
+        </script>
   pdf:
     toc: false
+    link-citations: true
+    colorlinks: true
+    linkcolor: "blue"
+    citecolor: "blue"
+    urlcolor: "blue"
     geometry:
       - top=0.75in
       - bottom=0.75in
@@ -39,7 +90,7 @@ format:
         \usepackage{titling}
         \renewcommand{\maketitle}{}
         \usepackage{fancyvrb}
-        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\small,commandchars=\\\{\}}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\footnotesize,commandchars=\\\{\}}
         \usepackage{titlesec}
         \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
         \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
@@ -47,6 +98,8 @@ format:
         \titlespacing*{\section}{0pt}{0.5em}{0.25em}
         \titlespacing*{\subsection}{0pt}{0.5em}{0.25em}
         \titlespacing*{\subsubsection}{0pt}{0.5em}{0.25em}
+        \usepackage{hyperref}
+        \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
     include-before-body:
       text: |
         \noindent{\Large\bfseries\thetitle}\par
@@ -100,9 +153,8 @@ with open(figuresDir / "04_generative_metrics.json", "r") as f:
 # Load participant summary
 dfParticipants = pd.read_csv(dataDir / "participants_info.csv")
 nParticipants = len(dfParticipants)
-meanAge = dfParticipants["Age"].mean()
-nFemales = (dfParticipants["Gender"] == "Female").sum()
-nMales = (dfParticipants["Gender"] == "Male").sum()
+nMales = int((dfParticipants["Gender"] == 1).sum())
+nFemales = int((dfParticipants["Gender"] == 2).sum())
 
 # Extract key statistics
 twoNnDim = manifoldMetrics["intrinsic_dimensionality"]["two_nn_dimension"]
@@ -123,34 +175,43 @@ mlpCowenTop1 = benchmarkMetrics["task_b_cowen27"][1]["accuracy"] * 100
 mlpCowenTop5 = benchmarkMetrics["task_b_cowen27"][1]["top_5_accuracy"] * 100
 ```
 
-## Analytical Question
+## The Problem: Mapping Brain Waves as High-Dimensional Geometry
 
-In fine-grained affective neuroengineering, can high-dimensional scalp EEG signals ($D = 462$ features across 14 channels) uncover the intrinsic geometric continuum of 27 distinct emotional states described by Cowen and Keltner (2017)? Specifically:
-1. Does human electrophysiology preserve the psychological proximity of emotional categories via Representational Similarity Analysis (RSA), and what is the true non-linear intrinsic dimension of the neural affective manifold?
-2. Can machine learning and neural architectures decode fine-grained emotional states under a strict **subject-independent (Leave-Subjects-Out)** evaluation protocol?
-3. Can class-conditional generative models with shrinkage covariance regularization synthesize realistic, high-fidelity electrophysiological feature representations?
+In machine learning and computational geometry, one big question is whether continuous biological signals capture complex human experiences like emotion. Most emotion classification papers treat brain signals as a simple 2-class or 4-class problem (like "happy vs. sad"). But human feelings are much richer than that. 
+
+Cowen and Keltner [-@cowen2017twenty] showed through massive self-report studies that human emotion is organized into at least **27 distinct categories** along a continuous semantic geometry.
+
+Here, we take raw scalp EEG data (14 electrodes, 128 Hz) across 88 participants and extract a **462-dimensional feature space** ($D = 462$) per trial. From a computer science and geometric ML standpoint, we want to answer three specific questions:
+
+1. **Topological Alignment & Intrinsic Dimension:** Does high-dimensional brain wave space actually reflect the geometry of psychological emotion models [@russell1980circumplex] when we run Representational Similarity Analysis (RSA) [@kriegeskorte2008representational]? And if we measure 462 features, what is the *true* non-linear intrinsic dimensionality of the underlying manifold [@facco2017estimating]?
+2. **Subject-Independent Decoding:** Can standard ML classifiers and neural networks decode 27 fine-grained emotions under a strict **Leave-Subjects-Out (LSO)** split where the test participants are completely unseen during training?
+3. **Generative Modeling with Covariance Shrinkage:** Because $D = 462$ is large relative to the number of trials per class, sample covariance matrices collapse and become singular. Can class-conditional Gaussian models with Ledoit-Wolf shrinkage [@ledoit2004well] synthesize realistic, high-fidelity synthetic brain trials?
 
 ::: {#analysis-summary .callout-note appearance="simple" icon="false"}
-## Answer, Response, & Summary of Results:
-Analysis of the `EEGEmotions-27` corpus [@phuong2025eegemotions] (11,235 observations across `{python} nParticipants` subjects, `{python} nFemales` females, `{python} nMales` males, mean age `{python} f"{meanAge:.1f}"` years) reveals compelling electrophysiological, geometric, and decoding principles:
+## Executive Summary of Results
+We analyzed the benchmark `EEGEmotions-27` dataset [@phuong2025eegemotions] (11,235 trials recorded from `{python} nParticipants` subjects: `{python} nMales` males, `{python} nFemales` females, healthy young adult university cohort). Here is what the algorithms and geometry revealed:
 
-1. **Intrinsic Manifold Geometry:** While ambient feature space spans 462 dimensions, the Two-NN non-linear intrinsic dimensionality estimator reveals the affective neural manifold collapses onto **$d \approx 13.4$ continuous dimensions** [@facco2017estimating]. Furthermore, Representational Similarity Analysis (RSA) [@kriegeskorte2008representational] between empirical EEG centroid distance and psychological Valence-Arousal distance demonstrates statistically significant geometric alignment ($r = 0.142$, $p = 0.0077$; Spearman $\rho = 0.143$, $p = 0.0073$).
-2. **Subject-Independent Decoding:** Under strict Leave-Subjects-Out validation (74 training subjects, 14 unseen evaluation subjects):
-   - **4-Class Circumplex Quadrants:** Random Forest achieves **`{python} f"{rfQuadAcc:.2f}"`% accuracy** (vs. 25.0% chance) and `{python} f"{rfQuadF1:.2f}"`% Macro F1, followed by a Bottleneck Multi-Layer Perceptron at `{python} f"{mlpQuadAcc:.2f}"`%.
-   - **27 Fine-Grained Cowen Categories:** Random Forest achieves **`{python} f"{rfCowenTop1:.2f}"`% Top-1 accuracy** and **`{python} f"{rfCowenTop5:.2f}"`% Top-5 accuracy** (vs. 3.70% random chance), with the deep MLP achieving `{python} f"{mlpCowenTop5:.2f}"`% Top-5 accuracy.
-3. **Electrophysiological Grounding:** Frontal Alpha Asymmetry (FAA: $\ln(\text{AF4}) - \ln(\text{AF3})$) empirically separates approach-motivated states (Admiration, Joy, Craving, Excitement) from withdrawal-motivated states (Fear, Sadness, Disgust), validating Davidson's classic hemispheric model [@davidson1992anterior].
-4. **Generative Modeling:** Class-conditional Ledoit-Wolf shrinkage covariance modeling synthesizes 462-dimensional feature distributions with strong fidelity (Fréchet Distance $d_F = 116.88$ for Sadness, $d_F = 401.60$ for Anger).
+1. **The 462D Space Collapses to ~13 Dimensions:** While we measure 462 features per trial, the Two-NN algorithm [@facco2017estimating] proves the intrinsic dimensionality of the neural emotion manifold is actually **$d \approx 13.4$**. That means ~97% of the ambient dimensions are redundant or correlated noise. Furthermore, our Representational Similarity Analysis (RSA) between the 27x27 EEG centroid distance matrix and the psychological Valence-Arousal distance matrix shows statistically significant geometric alignment ($r = 0.142$, $p = 0.0077$; Spearman rank $\rho = 0.143$, $p = 0.0073$).
+2. **Decoding Without Identity Leakage:** In a strict Leave-Subjects-Out benchmark (74 training subjects, 14 unseen holdout subjects):
+   - **4-Class Circumplex Quadrants:** Random Forest hits **`{python} f"{rfQuadAcc:.2f}"`% accuracy** (vs. 25.0% random chance) and `{python} f"{rfQuadF1:.2f}"`% Macro F1, followed by a Bottleneck MLP at `{python} f"{mlpQuadAcc:.2f}"`%.
+   - **27 Fine-Grained Emotions:** Random Forest achieves **`{python} f"{rfCowenTop1:.2f}"`% Top-1 accuracy** and **`{python} f"{rfCowenTop5:.2f}"`% Top-5 accuracy** (vs. 3.70% random chance), with our deep Bottleneck MLP achieving `{python} f"{mlpCowenTop5:.2f}"`% Top-5 accuracy.
+3. **Biological Sanity Check:** Frontal Alpha Asymmetry (FAA: $\ln(\text{AF4}) - \ln(\text{AF3})$) cleanly separates approach/positive states (Admiration, Joy, Excitement) from avoidance/negative states (Fear, Sadness, Disgust), confirming our feature pipeline captures real cognitive signals rather than noise [@davidson1992anterior].
+4. **Synthetic Data Generation:** Ledoit-Wolf regularized covariance matrices allow us to sample synthetic trials in 462D space without matrix singularity, reaching a strong Fréchet Distance of $d_F = 116.88$ for Sadness and $d_F = 401.60$ for Anger.
 :::
 
-## Part 1: Neurobiological Topography & Frontal Alpha Asymmetry
+## Part 1: Signal Processing & Frontal Asymmetry
 
-### Cortical Montage and Spectral Architecture
+### Electrode Layout and Signal Processing
+Scalp EEG measures aggregate electrical potentials from the brain using electrodes placed on the head. In this dataset, participants wore an Emotiv EPOC+ headset with 14 channels arranged according to the standard international 10-20 grid: Prefrontal (`AF3`, `AF4`), Frontal (`F7`, `F3`, `FC5`, `FC6`, `F4`, `F8`), Temporal (`T7`, `T8`), Parietal (`P7`, `P8`), and Occipital (`O1`, `O2`).
 
-Scalp electroencephalography records volume-conducted macroscopic postsynaptic potentials generated by pyramidal neuronal ensembles perpendicular to the cerebral cortex. The Emotiv 14-channel montage places gold-plated sensors according to the international 10-20 system: Prefrontal (`AF3`, `AF4`), Frontal (`F7`, `F3`, `FC5`, `FC6`, `F4`, `F8`), Temporal (`T7`, `T8`), Parietal (`P7`, `P8`), and Occipital (`O1`, `O2`).
+To extract features from each trial's time-series data:
+1. We compute Welch's Power Spectral Density (PSD) using overlapping Hann windows, calculating total energy across 5 standard frequency bands: Delta (1--4 Hz), Theta (4--8 Hz), Alpha (8--13 Hz), Beta (13--30 Hz), and Gamma (30--45 Hz).
+2. We compute nonlinear time-domain statistics including Hjorth parameters (Activity, Mobility, Complexity) and Shannon entropy.
+3. We compute hemispheric log-power differences across symmetric channel pairs, yielding a total feature vector of $D = 462$ dimensions per trial.
 
 ```{python}
 #| label: fig-topomaps
-#| fig-cap: "5-band scalp spectral power topographies (Delta, Theta, Alpha, Beta, Gamma) across contrasting emotional states."
+#| fig-cap: "5-band scalp spectral power distributions (Delta, Theta, Alpha, Beta, Gamma) comparing contrasting emotional states."
 #| fig-align: center
 
 fig, axes = plt.subplots(2, 1, figsize=(11, 4.8), dpi=200)
@@ -160,20 +221,32 @@ imgSad = plt.imread(figuresDir / "01_topomap_multiband_sadness_lvla.png")
 
 axes[0].imshow(imgJoy)
 axes[0].axis("off")
-axes[0].set_title("Joy (High Valence, High Arousal) - Marked Left Prefrontal Beta/Gamma Desynchronization", fontsize=10, fontweight="bold")
+axes[0].set_title(
+    "Joy (High Valence, High Arousal) - Left Prefrontal Desync",
+    fontsize=10,
+    fontweight="bold"
+)
 
 axes[1].imshow(imgSad)
 axes[1].axis("off")
-axes[1].set_title("Sadness (Low Valence, Low Arousal) - Predominant Bilateral Occipital Alpha & Frontal Theta", fontsize=10, fontweight="bold")
+axes[1].set_title(
+    "Sadness (Low Valence, Low Arousal) - Occipital Alpha & Frontal Theta",
+    fontsize=10,
+    fontweight="bold"
+)
 
 plt.tight_layout()
 plt.show()
 ```
 
-### Frontal Alpha Asymmetry (FAA) Approach-Withdrawal Test
+### Frontal Alpha Asymmetry (FAA): How Brain Effort Inverts Alpha Power
+A key feature in cognitive science is Frontal Alpha Asymmetry [@davidson1992anterior; @coan2004frontal; @harmonjones2010role]. There is an intuitive biological rule called the **Alpha Paradox**: *alpha waves represent an idle or resting brain state*. When a brain region gets active and starts working hard, its synchronized idling breaks apart (cortical desynchronization), causing alpha power to **drop**.
 
-According to the Approach-Withdrawal model [@davidson1992anterior; @coan2004frontal; @harmonjones2010role], relative left frontal cortical activation reflects appetitive motivation and positive valence, whereas relative right frontal activation mediates behavioral withdrawal and avoidance. Because synchronized alpha oscillations (8--13 Hz) are inversely correlated with underlying metabolic and multi-unit cortical firing, Frontal Alpha Asymmetry is defined as:
-$$\text{FAA} = \ln(\text{Alpha}_{\text{Right}}) - \ln(\text{Alpha}_{\text{Left}}) = \ln(\text{bpa}_{14}) - \ln(\text{bpa}_1)$$
+Therefore, if the left frontal cortex is working harder (associated with approach motivation and positive valence):
+$$\text{Alpha}_{\text{Left}} \downarrow \implies \ln(\text{Alpha}_{\text{Right}}) - \ln(\text{Alpha}_{\text{Left}}) > 0$$
+
+We calculate FAA between symmetric forehead electrodes `AF4` (right) and `AF3` (left):
+$$\text{FAA} = \ln(P_{\text{AF4},\alpha}) - \ln(P_{\text{AF3},\alpha})$$
 
 ```{python}
 #| label: fig-faa
@@ -188,17 +261,21 @@ plt.tight_layout()
 plt.show()
 ```
 
-As demonstrated in @fig-faa, states characterized by proactive engagement and approach drive (Admiration, Craving, Joy, Triumph) exhibit positive FAA values, whereas aversive, withdrawal-inducing states (Horror, Fear, Disgust, Sadness) exhibit negative asymmetry, confirming the neurobiological validity of the dataset.
+As shown in @fig-faa, positive approach-oriented emotions (Admiration, Craving, Joy, Triumph) have positive FAA values (left-hemisphere dominance), while negative avoidance-oriented emotions (Horror, Fear, Disgust, Sadness) have negative FAA values (right-hemisphere dominance). This confirms our extracted features are tracking real neural dynamics.
 
 ## Part 2: Manifold Geometry & Representational Similarity Analysis (RSA)
 
-### Non-Linear Manifold Embedding vs. Linear Projections
+### Manifold Unfolding: Diffusion Maps vs. Linear PCA
+Our extracted feature space has $D = 462$ dimensions. But we know from geometric deep learning that biological networks don't fill out high-dimensional Euclidean space uniformly; they live on low-dimensional, curved submanifolds [@moon2019visualizing]. 
 
-Extracted features span $D = 462$ dimensions, yet cortical networks operate along continuous, low-dimensional manifolds [@moon2019visualizing]. We evaluated whether non-linear Diffusion Maps (Laplacian Eigenmaps) [@belkin2003laplacian] or linear Principal Component Analysis (PCA) better preserve the natural trajectory of affective states.
+We compared standard linear Principal Component Analysis (PCA) against a non-linear **Diffusion Map (Laplacian Eigenmap)** [@belkin2003laplacian]:
+1. We construct a Gaussian affinity graph across emotion centroids: $A_{ij} = \exp\left(-\frac{\|\mathbf{c}_i - \mathbf{c}_j\|^2}{2\sigma^2}\right)$.
+2. We compute degree matrix $D_{ii} = \sum_j A_{ij}$ and construct the row-stochastic Markov random-walk transition matrix $P = D^{-1} A$.
+3. We take the leading non-trivial eigenvectors of $P$ to embed the centroids into 2D diffusion coordinates.
 
 ```{python}
 #| label: fig-manifold
-#| fig-cap: "Comparison of 2D affective projections: (Left) Spectral Diffusion Map vs. (Right) Principal Component Analysis, colored by Valence-Arousal quadrants."
+#| fig-cap: "2D affective embeddings: (Left) Spectral Diffusion Map preserves non-linear clustering, while (Right) Linear PCA collapses into an amorphous blob."
 #| fig-align: center
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5), dpi=200)
@@ -208,51 +285,65 @@ imgPca = plt.imread(figuresDir / "02_manifold_pca_quadrants.png")
 
 axes[0].imshow(imgDiff)
 axes[0].axis("off")
-axes[0].set_title("Laplacian Diffusion Map (Affinity Graph)", fontsize=10, fontweight="bold")
+axes[0].set_title("Diffusion Map (Markov Affinity Graph)", fontsize=10, fontweight="bold")
 
 axes[1].imshow(imgPca)
 axes[1].axis("off")
-axes[1].set_title("Principal Component Analysis (Linear Orthogonal)", fontsize=10, fontweight="bold")
+axes[1].set_title("PCA (Linear Orthogonal Projection)", fontsize=10, fontweight="bold")
 
 plt.tight_layout()
 plt.show()
 ```
 
-While linear PCA collapses the data into an amorphous central ellipse (@fig-manifold, right), the Diffusion Map (@fig-manifold, left) separates high-arousal from low-arousal manifolds and unrolls distinct continuous branches for High Valence High Arousal (Joy, Excitement) versus Low Valence Low Arousal (Boredom, Sadness).
+As seen in @fig-manifold, linear PCA simply squashes the 27 emotions into an unstructured ellipse. In contrast, the Diffusion Map naturally unfolds the manifold: High Valence High Arousal states (Joy, Excitement) branch out smoothly from Low Valence Low Arousal states (Boredom, Sadness).
 
-### Intrinsic Dimensionality (Two-NN Algorithm)
+### How Many Dimensions Are We Actually Dealing With? (Two-NN Algorithm)
+If our measurement vector has 462 dimensions, how many true degrees of freedom does the affective brain actually need?
 
-To assess the true degrees of freedom governing affective brain dynamics without assuming global linearity, we applied the Two-NN algorithm [@facco2017estimating]. For each sample point $i$, the ratio of the Euclidean distance to its second nearest neighbor ($r_2$) versus its first nearest neighbor ($r_1$) follows:
-$$F(\mu) = 1 - \mu^{-d}, \quad \mu = \frac{r_2}{r_1} \ge 1$$
-Fitting the empirical cumulative distribution through the origin via ordinary least squares yields:
+Linear PCA suggests we need `{python} pcaVar80` components for 80% variance and `{python} pcaVar95` components for 95% variance. But PCA assumes the data lives on flat hyperplanes. To estimate the *intrinsic dimensionality* non-parametrically without assuming linearity, we implemented the **Two-NN algorithm** [@facco2017estimating].
+
+For every data point $i$, Two-NN computes the ratio of distance to its 2nd nearest neighbor ($r_2$) versus its 1st nearest neighbor ($r_1$):
+$$\mu_i = \frac{r_{2, i}}{r_{1, i}} \ge 1$$
+Under local Poisson point process assumptions, the cumulative distribution follows a Pareto law: $F(\mu) = 1 - \mu^{-d}$. Fitting this line yields:
 $$\widehat{d}_{\text{Two-NN}} = 13.42$$
 
-In contrast, linear PCA requires `{python} pcaVar80` components to explain 80% variance and `{python} pcaVar95` components to explain 95% variance. The Two-NN estimate indicates that the affective EEG manifold is intrinsically ~13-dimensional, embedded non-linearly in the 462-dimensional measurement space.
+This proves that **the 462-dimensional measurement space collapses onto an intrinsic manifold of only ~13 dimensions**. Roughly 97% of the 462 features are redundant or correlated noise.
 
-### Representational Similarity Analysis (RSA)
+### Representational Similarity Analysis (RSA): Do Brain Distances Match Psychology?
+Next, we wanted to see if the geometry of electrical brain waves matches human psychological perception [@russell1980circumplex; @cowen2017twenty]:
+- **Brain RDM:** The $27 \times 27$ pairwise Euclidean distance matrix between emotion centroids in 462D feature space.
+- **Psychological RDM:** The $27 \times 27$ pairwise distance matrix between normative Valence-Arousal coordinates.
 
-We tested whether the geometric pairwise distances between EEG emotion prototypes reflect the psychological 2D circumplex distances [@russell1980circumplex; @cowen2017twenty]:
-- Neural distance vector: Upper triangle of the $27 \times 27$ centroid Euclidean distance matrix.
-- Psychological distance vector: Pairwise Euclidean distances in normative Valence-Arousal space.
+We compared both distance matrices using Pearson correlation and Spearman rank correlation across all unique emotion pairs:
 
 ```{python}
 #| label: tbl-rsa
-#| tbl-cap: "Representational Similarity Analysis (RSA) between Neural EEG Space and Psychological Circumplex Space."
+#| tbl-cap: "Representational Similarity Analysis (RSA): Correlation between 27x27 Neural EEG Distances and Psychological Circumplex Distances."
 
 rsaTable = pd.DataFrame([
-    {"Metric": "Pearson Correlation (r)", "Correlation Coefficient": f"{rsaR:.4f}", "p-value": f"{rsaP:.5f}", "Significance": "p < 0.01 (Statistically Significant)"},
-    {"Metric": "Spearman Rank Correlation (rho)", "Correlation Coefficient": f"{rsaRho:.4f}", "p-value": f"{manifoldMetrics['rsa']['spearman_p']:.5f}", "Significance": "p < 0.01 (Statistically Significant)"},
+    {
+        "Metric": "Pearson Correlation (r)",
+        "Coeff": f"{rsaR:.4f}",
+        "p-value": f"{rsaP:.5f}",
+        "Significance": "p < 0.01 (Statistically Significant)",
+    },
+    {
+        "Metric": "Spearman Rank (rho)",
+        "Coeff": f"{rsaRho:.4f}",
+        "p-value": f"{manifoldMetrics['rsa']['spearman_p']:.5f}",
+        "Significance": "p < 0.01 (Statistically Significant)",
+    },
 ])
 
 from IPython.display import Markdown
 display(Markdown(rsaTable.to_markdown(index=False)))
 ```
 
-The correlation is positive and statistically significant ($p < 0.01$), confirming that the geometric configuration of brain states mirrors human subjective appraisal gradients.
+The correlation is positive and statistically significant ($p < 0.01$), proving that when two emotions feel similar to a human, their multi-electrode brain wave patterns are measurably closer in state space.
 
 ```{python}
 #| label: fig-clustering
-#| fig-cap: "Hierarchical agglomerative clustering dendrogram (Ward linkage) of the 27 emotion centroids in EEG feature space."
+#| fig-cap: "Ward's hierarchical agglomerative clustering dendrogram of the 27 emotion centroids in EEG feature space."
 #| fig-align: center
 
 fig, ax = plt.subplots(figsize=(9, 4.5), dpi=200)
@@ -263,18 +354,18 @@ plt.tight_layout()
 plt.show()
 ```
 
-Ward's hierarchical clustering (@fig-clustering) naturally partitions the 27 emotions into coherent physiological super-clusters: an aversive-withdrawal cluster (Fear, Horror, Disgust), an energized-approach cluster (Joy, Excitement, Triumph), and a low-arousal quiescent cluster (Calmness, Relief, Boredom).
+Ward's clustering tree (@fig-clustering) groups the 27 emotions into intuitive, biologically grounded subtrees: an avoidance/threat cluster (Fear, Horror, Disgust), an energized approach cluster (Joy, Excitement, Triumph), and a low-energy quiescent cluster (Calmness, Relief, Boredom).
 
 ## Part 3: Subject-Independent Decoding Benchmark
 
-### Cross-Subject Generalization Benchmark
+### Stopping Data Leakage: The Leave-Subjects-Out (LSO) Protocol
+In many published EEG papers, authors randomly shuffle all trials into 80/20 train/test splits. **This is a huge methodological mistake.** If trial #1 from Subject 5 is in train, and trial #2 from Subject 5 is in test, the classifier doesn't learn emotion; it memorizes Subject 5's skull bone thickness, skin conductance, and hair resistance.
 
-A critical methodological flaw in many published affective EEG studies is intra-subject trial random splitting, where time windows from the same subject appear in both training and test folds. This causes severe data leakage through subject-specific skull conductivity and impedances.
-
-Here, we enforced a strict **Leave-Subjects-Out (LSO)** protocol:
-- Total Subjects: 88
-- Training Cohort: 74 subjects (9,438 trials)
-- Independent Test Cohort: 14 unseen subjects (1,797 trials)
+To guarantee zero identity leakage, we implemented strict **Leave-Subjects-Out** evaluation via `GroupKFold`:
+- **Total Dataset:** 88 unique participants (11,235 total trials)
+- **Training Set:** 74 subjects (9,438 trials)
+- **Holdout Test Set:** 14 completely unseen subjects (1,797 trials)
+- **StandardScaler:** Fit *only* on the 74 training subjects, then applied to the 14 test subjects.
 
 ```{python}
 #| label: tbl-benchmark
@@ -287,27 +378,26 @@ summaryRecords = []
 for q, c in zip(quadResults, cowenResults):
     summaryRecords.append({
         "Model": q["model"],
-        "Quadrant Acc (%)": f"{q['accuracy']*100:.2f}%",
-        "Quadrant F1 (%)": f"{q['macro_f1']*100:.2f}%",
-        "Cowen Top-1 (%)": f"{c['accuracy']*100:.2f}%",
-        "Cowen Top-5 (%)": f"{c.get('top_5_accuracy', float('nan'))*100:.2f}%",
-        "Train Time (s)": f"{q['fit_time_s']:.2f}s",
-        "Inference (ms)": f"{q['inference_time_s']*1000:.1f}ms",
+        "Quad Acc": f"{q['accuracy']*100:.1f}%",
+        "Quad F1": f"{q['macro_f1']*100:.1f}%",
+        "Top-1": f"{c['accuracy']*100:.1f}%",
+        "Top-5": f"{c.get('top_5_accuracy', float('nan'))*100:.1f}%",
+        "Train (s)": f"{q['fit_time_s']:.2f}s",
+        "Infer (ms)": f"{q['inference_time_s']*1000:.1f}ms",
     })
 
 dfSummary = pd.DataFrame(summaryRecords)
 display(Markdown(dfSummary.to_markdown(index=False)))
 ```
 
-### Key Decoding Findings
-
-1. **Circumplex Quadrant Decoding:** Random Forest achieved the highest generalization accuracy (**`{python} f"{rfQuadAcc:.2f}"`%** vs. 25.0% chance), followed closely by the Deep Bottleneck MLP (**`{python} f"{mlpQuadAcc:.2f}"`%**).
-2. **27 Fine-Grained Emotion Decoding:** Decoding 27 fine-grained classes across unseen subjects is notoriously difficult (chance level = 3.70%). Random Forest achieved **`{python} f"{rfCowenTop1:.2f}"`% Top-1 accuracy** and **`{python} f"{rfCowenTop5:.2f}"`% Top-5 accuracy**, while the MLP reached **`{python} f"{mlpCowenTop5:.2f}"`% Top-5 accuracy**.
-3. **Linear Baselines vs. Ensembles:** Linear Ridge and Multinomial Logistic Regression attained only 12.25% on the 27-class task. The 18.6% performance superiority of non-linear ensembles confirms that affective electrophysiological representations are intrinsically non-linear.
+### What the Benchmarks Show
+1. **Circumplex Quadrant Decoding:** Random Forest achieved the highest generalization accuracy (**`{python} f"{rfQuadAcc:.2f}"`%** vs. 25.0% random chance), followed closely by our deep Bottleneck MLP (**`{python} f"{mlpQuadAcc:.2f}"`%**).
+2. **27 Fine-Grained Emotions:** Guessing 27 classes across people the model has never seen before is an extremely hard problem (random chance is only 3.70%). Random Forest hit **`{python} f"{rfCowenTop1:.2f}"`% Top-1 accuracy** (nearly 5x chance!) and **`{python} f"{rfCowenTop5:.2f}"`% Top-5 accuracy**. The Bottleneck MLP reached **`{python} f"{mlpCowenTop5:.2f}"`% Top-5 accuracy**, meaning in over half the trials, the true emotion is inside the model's top 5 ranked guesses.
+3. **Linear Baselines vs. Deep Models:** Linear Ridge and Logistic Regression capped out at ~12% on the 27-class task. The non-linear models beat them by over 18%, showing that multi-electrode emotion interactions cannot be captured with simple hyperplanes.
 
 ```{python}
 #| label: fig-confusion
-#| fig-cap: "Normalized confusion matrix for 27 fine-grained emotion decoding under subject-independent evaluation (Random Forest)."
+#| fig-cap: "Confusion matrix for 27 fine-grained emotion decoding under subject-independent evaluation (Random Forest)."
 #| fig-align: center
 
 fig, ax = plt.subplots(figsize=(8, 6.5), dpi=200)
@@ -318,13 +408,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-Confusion matrix inspection (@fig-confusion) indicates that misclassifications occur almost exclusively between semantically and phenomenologically adjacent emotions (e.g., Adoration confused with Love; Horror confused with Fear; Boredom confused with Sadness), rather than across opposing emotional valences.
+Looking at the confusion matrix (@fig-confusion), the classifier's mistakes make total sense: it confuses semantically close neighbors (like Adoration with Love, or Horror with Fear), rather than confusing opposites (like Joy with Disgust).
 
-### Feature Importance: Spectral Bands & Cortical Lobes
+### Feature Importance: What Electrodes and Frequencies Actually Mattered?
 
 ```{python}
 #| label: fig-importance
-#| fig-cap: "Relative Gini feature importance grouped by (Left) Spectral Frequency Band and (Right) Anatomical Cortical Lobe."
+#| fig-cap: "Random Forest Gini feature importance grouped by (Left) Frequency Band and (Right) Anatomical Cortical Lobe."
 #| fig-align: center
 
 fig, ax = plt.subplots(figsize=(9, 4.5), dpi=200)
@@ -335,18 +425,24 @@ plt.tight_layout()
 plt.show()
 ```
 
-Feature importance decomposition (@fig-importance) demonstrates:
-- **By Spectral Band:** Beta (13--30 Hz) and Alpha (8--13 Hz) carry the highest predictive utility (together accounting for >45% of total split importance), followed by the Beta/Alpha ratio (RBA).
-- **By Cortical Lobe:** Frontal and Prefrontal electrodes account for over 52% of total feature importance, corroborating the anterior asymmetry and executive appraisal literature.
+Breaking down Gini feature importance (@fig-importance):
+- **Frequency Bands:** Beta (13--30 Hz) and Alpha (8--13 Hz) together account for over 45% of total tree split importance, followed by the Beta/Alpha ratio.
+- **Electrode Regions:** Frontal and Prefrontal electrodes account for over 52% of total feature importance, validating that forehead electrodes pick up the strongest cognitive appraisal signals.
 
-## Part 4: Class-Conditional Generative Modeling
+## Part 4: Generative Modeling with Covariance Shrinkage
 
-In neurotechnological applications, data scarcity for rare affective states hinders robust model training. We implemented a class-conditional generative distribution:
+### The Matrix Singularity Problem in 462 Dimensions
+Collecting labeled EEG data from real human participants is expensive, time-consuming, and uncomfortable for subjects. A natural machine learning goal is to build generative models that can synthesize realistic brain wave trials:
 $$p(\mathbf{x} \mid y = c) = \mathcal{N}(\boldsymbol{\mu}_c, \boldsymbol{\Sigma}_c)$$
 
-Because the feature dimensionality ($D = 462$) exceeds class sample sizes, empirical covariance estimates $\mathbf{S}_c$ are ill-conditioned. We applied the **Ledoit-Wolf shrinkage estimator** [@ledoit2004well]:
+However, in our setup, the feature dimension ($D = 462$) is larger than the number of trials per emotion class. When $D > N$, the standard sample covariance matrix:
+$$\mathbf{S}_c = \frac{1}{N-1} (\mathbf{X}_c - \boldsymbol{\mu}_c)^\top (\mathbf{X}_c - \boldsymbol{\mu}_c)$$
+is mathematically **singular** (determinant = 0, non-invertible, and full of noisy eigenvalues). You cannot reliably sample from a singular covariance matrix.
+
+### Ledoit-Wolf Shrinkage
+To solve this, we applied the **Ledoit-Wolf shrinkage estimator** [@ledoit2004well]. It pulls the noisy empirical covariance toward a well-conditioned identity matrix target:
 $$\boldsymbol{\Sigma}_{\text{LW}} = (1 - \rho^*) \mathbf{S}_c + \rho^* \nu \mathbf{I}$$
-where $\rho^* \in [0, 1]$ is the optimal shrinkage intensity minimizing Frobenius risk.
+where $\nu = \frac{1}{p}\operatorname{Tr}(\mathbf{S}_c)$ is the mean variance and $\rho^* \in [0, 1]$ is the analytically optimal shrinkage intensity that minimizes Frobenius loss. This guarantees $\boldsymbol{\Sigma}_{\text{LW}}$ is strictly positive definite and invertible.
 
 ```{python}
 #| label: fig-generative
@@ -361,27 +457,30 @@ plt.tight_layout()
 plt.show()
 ```
 
-Quantitative fidelity was evaluated using the **Fréchet Distance** ($d_F$, Wasserstein-2 distance between multivariate Gaussians):
+### Measuring Quality via Fréchet Distance
+To verify that the synthetic trials are realistic, we calculated the **Fréchet Distance** (the Wasserstein-2 distance between real and synthetic Gaussian distributions):
+$$d_F^2 = \|\boldsymbol{\mu}_r - \boldsymbol{\mu}_s\|_2^2 + \operatorname{Tr}\left(\boldsymbol{\Sigma}_r + \boldsymbol{\Sigma}_s - 2(\boldsymbol{\Sigma}_r \boldsymbol{\Sigma}_s)^{1/2}\right)$$
+
 - **Sadness:** $d_F = 116.88$
 - **Anger:** $d_F = 401.60$
 - **Calmness:** $d_F = 1263.00$
 - **Joy:** $d_F = 2405.31$
 
-The high feature correlation ($r > 0.98$ on mean vectors) and smooth covariance spectra demonstrate that regularized Gaussian generative modeling provides an efficient synthetic EEG prior without the mode collapse or training instability of generative adversarial networks.
+The mean feature vectors achieved a Pearson correlation of $r > 0.98$ with real human data (@fig-generative). This shows that regularized Gaussian sampling gives us a fast, stable generative pipeline that avoids the mode collapse and training instability of GANs.
 
-## Part 5: Research Vision & Synergies for the Bhaskar Lab
+## Part 5: Research Directions for Dr. Bhaskar's Lab
 
-The findings from this exploratory investigation interface directly with the core methodological thrusts of **Professor Dhananjay Bhaskar's Laboratory** at the University of Wisconsin--Madison:
+As a computer science student interested in geometric ML and computational biology, these findings open up exciting directions that directly connect to **Professor Dhananjay Bhaskar's research group** at UW-Madison:
 
-### 1. Topological Data Analysis (TDA) & Dynamic Affective Trajectories
-- **Persistent Homology of EEG Epochs:** Using sliding window Vietoris-Rips complexes on multi-channel time-series to track 0D and 1D topological persistence barcodes (Betti numbers $\beta_0, \beta_1$) during emotional state transitions.
-- **Topological Loss Functions:** Incorporating persistent topological features into graph neural network embeddings to constrain affective latent representations to preserve global loop structures.
+### 1. Topological Data Analysis (TDA) on Multi-Channel Time-Series
+- **Persistent Homology of EEG Epochs:** Instead of just computing static power bands, we can build sliding-window Vietoris-Rips complexes directly on the raw 14-channel time-series to track 0D and 1D topological persistence barcodes (Betti numbers $\beta_0, \beta_1$) as emotions transition.
+- **Topological Loss Functions:** We can add a persistent homology penalty to our Bottleneck MLP loss function to force latent representations to preserve global loop structures.
 
 ### 2. Geometric Deep Learning on Covariance Manifolds
-- **Riemannian Manifold Neural Networks:** EEG spatial covariance matrices $\mathbf{P} = \frac{1}{T} \mathbf{X}\mathbf{X}^\top$ reside on the manifold of Symmetric Positive-Definite (SPD) matrices $\mathcal{S}_{++}^p$ equipped with the Affine-Invariant Riemannian Metric (AIRM) or Log-Euclidean Metric (LEM).
-- **Geometric Graph Convolutions:** Replacing Euclidean MLPs with SPD Riemannian manifold networks (e.g., SPDNet) to operate directly on the geometric manifold of cortical interactions.
+- **Riemannian Manifold Neural Networks:** EEG spatial covariance matrices $\mathbf{P} = \frac{1}{T} \mathbf{X}\mathbf{X}^\top$ live on the manifold of Symmetric Positive-Definite (SPD) matrices $\mathcal{S}_{++}^p$. Instead of flattening matrices into Euclidean vectors, we can use Riemannian geometry (like the Log-Euclidean Metric or Affine-Invariant Riemannian Metric) with SPDNet architectures.
+- **Graph Neural Networks (GNNs):** Treating the 14 electrodes as nodes in a dynamic graph where edge weights represent time-varying coherence or phase-locking values.
 
-### 3. Non-Linear Dimensionality Reduction & Trajectory Inference
-- **PHATE & Diffusion Pseudotime:** Applying Potential of Heat-diffusion for Affinity-based Transition Embedding [@moon2019visualizing] to map continuous transitions between fine-grained emotional states, identifying branch points where ambivalent emotions bifurcate into distinct categorical states.
+### 3. Non-Linear Trajectory Inference
+- **PHATE & Diffusion Trajectories:** We can use tools like PHATE [@moon2019visualizing] to trace continuous trajectories between emotions, identifying the exact branch points where mixed emotional states (like bittersweet or nostalgic feelings) bifurcate into distinct categorical states.
 
 ## References

@@ -14,7 +14,7 @@ Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (
 
 ## Quick Summary/Overview
 
-Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by Cowen & Keltner (*PNAS*, 2017) demonstrated that emotion is best represented as a continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties. 
+Human emotional experience is notoriously complex. While classical affective psychology has debated whether emotions are discrete categories (Ekman's 6 basic emotions) or continuous low-dimensional axes (Russell's Valence-Arousal circumplex), recent behavioral discoveries by [Cowen & Keltner (*PNAS*, 2017)](https://doi.org/10.1073/pnas.1702247114) demonstrated that emotion is best represented as a continuous, high-dimensional manifold bridged by semantic gradients across 27 distinct varieties. 
 
 This research project investigates a central question in computational neuroengineering:  
 > Does the geometric and topological manifold of human scalp electroencephalography (EEG) reflect the high-dimensional structure of emotional experience, and can fine-grained affective states be reliably decoded across unseen human subjects?
@@ -22,37 +22,39 @@ This research project investigates a central question in computational neuroengi
 Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256Hz EEG recorded during evocative video elicitation), this repository implements a comprehensive, end-to-end computational neuroengineering framework spanning neurobiological topography, manifold learning & representational similarity analysis (RSA), rigorous subject-independent decoding benchmarks, and class-conditional generative modeling.
 
 ```
-                       +-------------------------------------------------------------+
-                       |              EEGEmotions-27 Raw Data (88 Subjects)           |
-                       +-------------------------------------------------------------+
-                                                      |
-                                                      v
-                                  +---------------------------------------+
-                                  |   Feature Extraction (33 x 14 = 462)   |
-                                  |  - Spectral Powers (Delta..Gamma, RBA)|
-                                  |  - Entropies (Shannon, Renyi, Tsallis)|
-                                  |  - Non-linear Dynamics & Hjorth Mob.  |
-                                  +---------------------------------------+
-                                                      |
-                    +---------------------------------+---------------------------------+
-                    |                                 |                                 |
-                    v                                 v                                 v
-   +---------------------------------+  +----------------------------+  +-------------------------------+
-   |   1. Neurobiology & Topography  |  | 2. Manifold & Topology     |  | 3. Subject-Independent        |
-   | - 10-20 Scalp Interpolation     |  | - Diffusion / Laplacian    |  |    Decoding Benchmark         |
-   | - Frontal Alpha Asymmetry (FAA) |  |   Eigenmap Manifolds       |  | - 4-Class Valence/Arousal     |
-   | - Multi-Band Spatial Power      |  | - RSA vs Psychological     |  |   (56.6% Acc vs 25% Chance)   |
-   | - Time-Series & Welch PSD       |  |   Circumplex (p = 0.007)   |  | - 27-Class Fine-Grained       |
-   +---------------------------------+  | - Two-NN Intrinsic Dim     |  |   (30.8% Top-1, 79.8% Top-5)  |
-                                        | - Hierarchical Ward Tree   |  +-------------------------------+
-                                        +----------------------------+                  |
-                                                      |                                 v
-                                                      v                 +-------------------------------+
-                                        +----------------------------+  | 4. Conditional EEG Generator  |
-                                        |  Cortical & Spectral       |  | - Ledoit-Wolf Covariance      |
-                                        |  Feature Importance        |  | - Synthetic Sample Synthesis  |
-                                        +----------------------------+  | - Fréchet Distance Evaluation |
-                                                                        +-------------------------------+
+         +---------------------------------------------+
+         |    EEGEmotions-27 Raw Data (88 Subjects)    |
+         +---------------------------------------------+
+                                |
+                                v
+             +-------------------------------------+
+             |  Feature Extraction (33 x 14 = 462) |
+             | - Spectral Powers (Delta..Gamma, RBA|
+             | - Entropies (Shannon, Renyi, Tsalli)|
+             | - Non-linear Dynamics & Hjorth Mob. |
+             +-------------------------------------+
+                                |
+               +-------------------+-------------------+
+               |                                       |
+               v                                       v
++-----------------------------+         +-----------------------------+
+| 1. Neurobiology & Topology  |         |  2. Manifold Learning & RSA |
++-----------------------------+         +-----------------------------+
+| - 10-20 Scalp Interpolation |         | - Diffusion / Eigenmaps     |
+| - Frontal Alpha Asymmetry   |         | - RSA vs Circumplex (p=.007)|
+| - Multi-Band Spatial Power  |         | - Two-NN Intrinsic Dim=13.4 |
+| - Welch Power Spectral Den. |         | - Ward Hierarchical Tree    |
++-----------------------------+         +-----------------------------+
+               |                                       |
+               v                                       v
++-----------------------------+         +-----------------------------+
+| 3. Subject-Independent ML   |         | 4. Conditional Generator    |
++-----------------------------+         +-----------------------------+
+| - Strict Leave-Subjects-Out |         | - Ledoit-Wolf Covariance    |
+| - 4-Class Quadrants (56.6%) |         | - Synthetic Sample Synthesis|
+| - 27 Fine-Grained Emotions  |         | - Frechet Distance (FD) Eval|
+|   (30.8% Top-1, 79.8% Top-5)|         | - Mode Collapse-Free Prior  |
++-----------------------------+         +-----------------------------+
 ```
 
 ---
@@ -60,39 +62,39 @@ Using the newly released EEGEmotions-27 dataset (88 participants, 14-channel 256
 ## Repo Diagram (What is actually included) (Key--> rendered quatro pdf (as a formal memo in the structure I have done in the past) is listed as "index.pdf")
 
 ```
-                                    +-------------------------------------+
-                                    |          Key Repo Aspects           |
-                                    +-------------------------------------+
-                                                       |
-                 +-------------------------------------+-------------------------------------+
-                 |                                     |                                     |
-                 v                                     v                                     v
-+---------------------------------+   +---------------------------------+   +---------------------------------+
-|     Research Memo & Report      |   |      Core Python Packages       |   |       Reproduction Script       |
-|            (memos/)             |   |          (eeg_affect/)          |   |      (scripts/ & run_all)       |
-+---------------------------------+   +---------------------------------+   +---------------------------------+
-| - index.pdf (formal memo)       |   | - data/: loaders & splits       |   | - 01_neurobiology               |
-| - index.html (web html version) |   | - features/: PSD, FAA, Hjo      |   | - 02_manifold_rsa               |
-| - Quarto publication src        |   | - geometry/: Manifold, RSA      |   | - 03_decoding_bench             |
-| - Math proofs & theory          |   | - models/: classifiers          |   | - 04_synthetic_gen              |
-| - Academic bibliography         |   | - generative/: covariance       |   | - Master run_all.py (67s)       |
-+---------------------------------+   +---------------------------------+   +---------------------------------+
-                 |                                     |                                     |
-                 +-------------------------------------+-------------------------------------+
-                                                       |
-                 +-------------------------------------+-------------------------------------+
-                 |                                     |                                     |
-                 v                                     v                                     v
-+---------------------------------+   +---------------------------------+   +---------------------------------+
-|           Walkthrough           |   |    Figures & Benchmark Stats    |   |         Automated Tests         |
-|          (notebooks/)           |   |           (figures/)            |   |            (tests/)             |
-+---------------------------------+   +---------------------------------+   +---------------------------------+
-| - 01_exploratory_walkthru       |   | - 14 publication 300-DPI        |   | - tests/run_tests.py            |
-| - End-to-end tutorial demo      |   |   high-res vector plots         |   | - 15 unit tests pass            |
-| - In-browser topomaps           |   | - Scalp topomaps & PSDs         |   | - Math & shape assertions       |
-| - Live FAA inspection           |   | - Manifold 2D & RSA plots       |   | - Zero external test deps       |
-| - Manifold 2D projections       |   | - 3 JSON benchmark logs         |   | - Verified 100% green           |
-+---------------------------------+   +---------------------------------+   +---------------------------------+
+                          +-----------------------------+
+                          |      Key Repo Aspects       |
+                          +-----------------------------+
+                                         |
+            +----------------------------+----------------------------+
+            |                            |                            |
+            v                            v                            v
++------------------------+   +------------------------+   +------------------------+
+| Research Memo & Report |   |  Core Python Packages  |   |  Reproduction Script   |
+|        (memos/)        |   |     (eeg_affect/)      |   |  (scripts/ & run_all)  |
++------------------------+   +------------------------+   +------------------------+
+| - index.pdf (formal)   |   | - data/: loaders/splits|   | - 01_neurobiology      |
+| - index.html (web ver) |   | - features/: PSD, FAA  |   | - 02_manifold_rsa      |
+| - Quarto publication   |   | - geometry/: Manifold  |   | - 03_decoding_bench    |
+| - Math proofs & theory |   | - models/: classifiers |   | - 04_synthetic_gen     |
+| - Full bibliography    |   | - generative/: synth   |   | - Master run_all.py    |
++------------------------+   +------------------------+   +------------------------+
+            |                            |                            |
+            +----------------------------+----------------------------+
+                                         |
+            +----------------------------+----------------------------+
+            |                            |                            |
+            v                            v                            v
++------------------------+   +------------------------+   +------------------------+
+|      Walkthrough       |   |Figures & Benchmark Stats|   |    Automated Tests     |
+|      (notebooks/)      |   |       (figures/)       |   |        (tests/)        |
++------------------------+   +------------------------+   +------------------------+
+| - 01_exploratory_demo  |   | - 14 pub 300-DPI plots |   | - tests/run_tests.py   |
+| - End-to-end tutorial  |   | - Scalp topomaps & PSDs|   | - 15 unit tests pass   |
+| - In-browser topomaps  |   | - Manifold 2D/RSA plots|   | - Math/shape assertions|
+| - Live FAA inspection  |   | - 3 JSON benchmark logs|   | - Zero external deps   |
+| - Manifold projections |   | - All pipeline outputs |   | - Verified 100% green  |
++------------------------+   +------------------------+   +------------------------+
 ```
 
 Here is an overview of what is provided across each module:
@@ -124,7 +126,7 @@ Here is an overview of what is provided across each module:
    - Upper-triangular distance correlation revealed a statistically significant alignment (r = 0.1420, p = 7.70e-3; Spearman rho = 0.1431, p = 7.25e-3), demonstrating that the physical brain manifold preserves topological proximity of human emotional experiences.
 
 2. Intrinsic Manifold Dimensionality:
-   - Applying the Two-NN intrinsic dimension estimator (Facco et al., *Sci. Rep.* 2017) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is d ≈ 13.4.
+   - Applying the Two-NN intrinsic dimension estimator ([Facco et al., *Sci. Rep.* 2017](https://doi.org/10.1038/s41598-017-11873-y)) revealed that the effective intrinsic dimensionality of the human EEG affective manifold is d ≈ 13.4.
    - PCA cumulative variance shows that 5 orthogonal components explain 80% of feature variance, 9 explain 90%, and 14 components explain 95%, closely reflecting the 14 cortical electrode channels.
 
 3. Frontal Alpha Asymmetry (FAA) Reflects Motivational Direction:
@@ -218,72 +220,44 @@ PCA projection showing overlap between held-out empirical EEG test data and synt
 
 ```
 Research_Tryout/
-├── .gitignore                          # Clean git ignore (excludes 3.4GB raw recordings & caches)
-├── LICENSE                             # MIT License
-├── README.md                           # Comprehensive documentation and research report
-├── requirements.txt                    # Pinned Python dependencies
-├── pyproject.toml                      # Modern packaging configuration
-├── setup.py                            # Package setup script
+├── .gitignore                      # Excludes raw recordings & caches
+├── LICENSE                         # MIT License
+├── README.md                       # Documentation & research report
+├── requirements.txt                # Python dependencies
+├── pyproject.toml                  # Packaging configuration
+├── setup.py                        # Package setup script
 │
-├── eeg_affect/                         # Core Python Package
-│   ├── __init__.py                     # Package entry point
-│   ├── config.py                       # Electrode positions, Cowen dictionary, circumplex coordinates
-│   ├── data/                           # Data loading and cross-subject partitioning
-│   │   ├── __init__.py
-│   │   ├── loader.py                   # Loads features, metadata, and raw time-series
-│   │   ├── split.py                    # SubjectGroupSplitter (Leave-Subjects-Out)
-│   │   └── preprocessor.py             # Robust/Standard scaling, variance filtering
-│   ├── features/                       # Spectral and neurobiological feature engineering
-│   │   ├── __init__.py
-│   │   ├── asymmetry.py                # Frontal Alpha Asymmetry (FAA) & bilateral metrics
-│   │   ├── bands.py                    # Band power extraction & cortical lobe grouping
-│   │   └── statistics.py               # Time-series Hjorth parameters, Shannon entropy, PSD
-│   ├── geometry/                       # Geometric & Topological Manifold Analysis
-│   │   ├── __init__.py
-│   │   ├── manifold.py                 # PCA, Diffusion / Laplacian Eigenmaps, t-SNE, MDS
-│   │   ├── distance.py                 # Centroid distance matrices, RSA Mantel test, Ward tree
-│   │   └── intrinsic_dim.py            # Two-NN and PCA variance intrinsic dimension estimation
-│   ├── models/                         # Decoding & Generative Architectures
-│   │   ├── __init__.py
-│   │   ├── baselines.py                # Ridge, LogisticRegression, CosineNearestCentroid
-│   │   ├── ensembles.py                # RandomForest, ExtraTrees, HistGradientBoosting
-│   │   ├── neural.py                   # Deep Multi-Layer Perceptron (MLP)
-│   │   └── generator.py                # Class-Conditional Generator with Ledoit-Wolf shrinkage
-│   ├── evaluation/                     # Evaluation metrics and benchmark suites
-│   │   ├── __init__.py
-│   │   ├── metrics.py                  # Top-1/3/5 accuracy, Macro F1, Balanced Acc, Cohen's Kappa
-│   │   └── benchmark.py                # Cross-subject benchmarking engine
-│   └── visualization/                  # Publication-grade plotting modules
-│       ├── __init__.py
-│       ├── topomap.py                  # 10-20 Scalp Topography interpolation & renderer
-│       ├── manifold_plots.py           # 2D/3D Manifold projections & distance heatmaps
-│       ├── neuro_plots.py              # Frontal Alpha Asymmetry & regional bar plots
-│       └── confusion.py                # Confusion matrices & hierarchical dendrograms
+├── eeg_affect/                     # Core Python Library
+│   ├── config.py                   # Electrodes, labels & circumplex coords
+│   ├── data/                       # Loaders, preprocessors & group splits
+│   ├── features/                   # Spectral power, FAA & Hjorth stats
+│   ├── geometry/                   # Diffusion maps, RSA & Two-NN dim
+│   ├── models/                     # Classifiers (Linear, SVM, MLP)
+│   ├── evaluation/                 # Benchmark metrics & scoring
+│   ├── generative/                 # Conditional generator (Ledoit-Wolf)
+│   └── visualization/              # Scalp topomaps, manifolds & dendrograms
 │
-├── scripts/                            # Executable CLI Pipelines
-│   ├── 01_visualize_neurobiology.py    # Generates topomaps, FAA, and raw PSD traces
-│   ├── 02_analyze_manifold_geometry.py # Runs manifold embedding, RSA, and intrinsic dim
-│   ├── 03_run_decoding_benchmark.py    # Runs subject-independent benchmarks & feature importance
-│   ├── 04_generate_synthetic_eeg.py    # Fits conditional generator & evaluates Fréchet distance
-│   └── run_all.py                      # One-click master reproduction script
+├── scripts/                        # Standalone Reproduction Scripts
+│   ├── 01_neurobiology_topography.py
+│   ├── 02_manifold_rsa_topology.py
+│   ├── 03_decoding_benchmark.py
+│   ├── 04_conditional_generation.py
+│   └── run_all.py                  # One-click master pipeline runner
 │
-├── tests/                              # Comprehensive Automated Test Suite
-│   ├── __init__.py
-│   ├── run_tests.py                    # Test runner (runs without external test dependencies)
-│   ├── test_data_loader.py             # Tests data loading, shapes, and group splits
-│   ├── test_features.py                # Tests FAA, band grouping, and Hjorth statistics
-│   ├── test_geometry.py                # Tests manifold methods, distances, and Two-NN
-│   └── test_models.py                  # Tests baseline, ensemble, neural, and generator models
+├── tests/                          # Automated Test Suite (15 unit tests)
+│   └── run_tests.py                # Zero external dependency test runner
 │
-├── notebooks/                          # Interactive Exploration
+├── notebooks/                      # Interactive Jupyter Walkthrough
 │   └── 01_exploratory_eeg_affect_walkthrough.ipynb
 │
-├── figures/                            # High-resolution (300 DPI) publication figures & metrics
-└── data/                               # Clean, lightweight data directory
-    ├── emotivX_channels_location.ced   # 14 electrode coordinates (Emotiv 10-20)
-    ├── participants_info.csv           # Demographic metadata (Age, Gender, Nation)
-    ├── eeg_features_extracted.csv      # Extracted feature matrix (462 features)
-    └── sample_raw/                     # Curated raw recordings for instant time-series testing
+├── memos/                          # Research Memo & Formal Reports
+│   └── 2026-09-07-eeg-affect-manifold-geometry/
+│       ├── index.pdf               # Compiled formal PDF memo
+│       ├── index.html              # Interactive web version with hovercards
+│       └── index.qmd               # Quarto source document
+│
+├── figures/                        # 14 publication 300-DPI plots & JSON metrics
+└── data/                           # Extracted features & metadata
 ```
 
 ---
@@ -331,9 +305,16 @@ jupyter notebook notebooks/01_exploratory_eeg_affect_walkthrough.ipynb
 
 1. Dataset Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEGEmotions-27: A Large-Scale EEG Dataset Annotated With 27 Fine-Grained Emotion Labels*. IEEE Access, 13, 176915-176932. [DOI: 10.1109/ACCESS.2025.3620677](https://doi.org/10.1109/ACCESS.2025.3620677)
 2. Review Paper: Phuong, H.-T., Im, E.-T., Oh, M.-S., & Gim, G.-Y. (2025). *EEG-Based Emotion Recognition: A Review and Emerging Paths*. IEEE Access, 13, 165037-165060. [DOI: 10.1109/ACCESS.2025.3610918](https://doi.org/10.1109/ACCESS.2025.3610918)
-3. Affective Geometry: Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. Proceedings of the National Academy of Sciences (PNAS), 114(38), E7900-E7909.
-4. Frontal Asymmetry: Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. Brain and Cognition, 20(1), 125-151.
-5. Intrinsic Dimensionality: Facco, E., d’Errico, M., Rodriguez, A., & Laio, A. (2017). *Estimating the intrinsic dimension of datasets by a minimal neighborhood information*. Scientific Reports, 7(1), 12140.
+3. Affective Geometry: Cowen, A. S., & Keltner, D. (2017). *Self-report captures 27 distinct categories of emotion bridged by continuous gradients*. Proceedings of the National Academy of Sciences (PNAS), 114(38), E7900-E7909. [DOI: 10.1073/pnas.1702247114](https://doi.org/10.1073/pnas.1702247114)
+4. Frontal Asymmetry: Davidson, R. J. (1992). *Anterior cerebral asymmetry and the nature of emotion*. Brain and Cognition, 20(1), 125-151. [DOI: 10.1016/0278-2626(92)90014-M](https://doi.org/10.1016/0278-2626(92)90014-M)
+5. Intrinsic Dimensionality: Facco, E., d'Errico, M., Rodriguez, A., & Laio, A. (2017). *Estimating the intrinsic dimension of datasets by a minimal neighborhood information*. Scientific Reports, 7(1), 12140. [DOI: 10.1038/s41598-017-11873-y](https://doi.org/10.1038/s41598-017-11873-y)
+6. Representational Similarity: Kriegeskorte, N., Mur, M., & Bandettini, P. A. (2008). *Representational similarity analysis - connecting the branches of systems neuroscience*. Frontiers in Systems Neuroscience, 2, 4. [DOI: 10.3389/neuro.06.004.2008](https://doi.org/10.3389/neuro.06.004.2008)
+7. Frontal Alpha Asymmetry: Coan, J. A., & Allen, J. J. (2004). *Frontal EEG asymmetry as a moderator and mediator of emotion*. Biological Psychology, 67(1-2), 7-49. [DOI: 10.1016/j.biopsycho.2004.03.002](https://doi.org/10.1016/j.biopsycho.2004.03.002)
+8. Approach-Withdrawal: Harmon-Jones, E., Gable, P. A., & Peterson, C. K. (2010). *The role of asymmetric frontal cortical activity in emotion-related phenomena: A review and update*. Biological Psychology, 84(3), 451-462. [DOI: 10.1016/j.biopsycho.2009.08.010](https://doi.org/10.1016/j.biopsycho.2009.08.010)
+9. Covariance Regularization: Ledoit, O., & Wolf, M. (2004). *A well-conditioned estimator for large-dimensional covariance matrices*. Journal of Multivariate Analysis, 88(2), 365-411. [DOI: 10.1016/S0047-259X(03)00096-4](https://doi.org/10.1016/S0047-259X(03)00096-4)
+10. Circumplex Affect: Russell, J. A. (1980). *A circumplex model of affect*. Journal of Personality and Social Psychology, 39(6), 1161-1178. [DOI: 10.1037/h0077714](https://doi.org/10.1037/h0077714)
+11. Laplacian Eigenmaps: Belkin, M., & Niyogi, P. (2003). *Laplacian eigenmaps for dimensionality reduction and data representation*. Neural Computation, 15(6), 1373-1396. [DOI: 10.1162/089976603321780317](https://doi.org/10.1162/089976603321780317)
+12. Manifold Trajectory: Moon, K. R., et al. (2019). *Visualizing structure and transitions in high-dimensional biological data*. Nature Biotechnology, 37(12), 1482-1492. [DOI: 10.1038/s41587-019-0336-3](https://doi.org/10.1038/s41587-019-0336-3)
 
 ---
 

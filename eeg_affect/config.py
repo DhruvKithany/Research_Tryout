@@ -1,28 +1,28 @@
-"""Configuration, constants, and metadata for EEG Affect project.
+"""Configuration, constants, and metadata
 
-Includes:
-- Emotiv 14-channel electrode coordinates (10-20 system).
-- Cowen 27 fine-grained emotion dictionary and taxonomy.
-- Valence-Arousal circumplex mappings.
-- Spectral frequency band definitions.
+Genearl list of waht is included:
+1. Emotiv 14-channel electrode coordinates (10-20 system)
+2.Cowen 27 fine-grained emotion dictionary and taxonomy
+3. Valence-Arousal circumplex mappings
+4. Spectral frequency band definitions
 """
 
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-# Base paths
+# base project paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 FIGURES_DIR = PROJECT_ROOT / "figures"
 RAW_REPO_DIR = PROJECT_ROOT / "raw_repo"
 
-# Electrode Configuration (Emotiv EPOC / Emotiv X 14 channels)
+# Electrode config (Emotiv EPOC / Emotiv X 14 channels)
 CHANNELS_14: List[str] = [
     "AF3", "F7", "F3", "FC5", "T7", "P7", "O1",
     "O2", "P8", "T8", "FC6", "F4", "F8", "AF4"
 ]
 
-# Channel index (1-based to match dataset feature suffixes like _1 ... _14)
+# Channel index (1-based instead bc the dataseat uses _1, _14, etc
 CHANNEL_INDEX: Dict[int, str] = {i + 1: ch for i, ch in enumerate(CHANNELS_14)}
 CHANNEL_NAME_TO_INDEX: Dict[str, int] = {ch: i + 1 for i, ch in enumerate(CHANNELS_14)}
 
@@ -61,7 +61,8 @@ def _load_dynamic_electrode_coords() -> Dict[str, Tuple[float, float]]:
                 return coords
             except Exception:
                 pass
-    # Verified 10-20 mathematical projection fallback
+
+    #Verified 10-20 mathematical projection fallback
     return {
         "AF3": (-0.1606, 0.3783), "F7": (-0.4134, 0.3004), "F3": (-0.2096, 0.2588),
         "FC5": (-0.3678, 0.1412), "T7": (-0.5110, 0.0000), "P7": (-0.4134, -0.3004),
@@ -72,7 +73,7 @@ def _load_dynamic_electrode_coords() -> Dict[str, Tuple[float, float]]:
 
 ELECTRODE_2D_COORDS: Dict[str, Tuple[float, float]] = _load_dynamic_electrode_coords()
 
-# Spectral Bands (Hz)
+#Spectral Bands (done inHz)
 FREQUENCY_BANDS: Dict[str, Tuple[float, float]] = {
     "delta": (1.0, 4.0),
     "theta": (4.0, 8.0),
@@ -81,7 +82,7 @@ FREQUENCY_BANDS: Dict[str, Tuple[float, float]] = {
     "gamma": (30.0, 45.0),
 }
 
-# Cowen & Keltner (2017) 27 Emotion Labels
+#Cowen & Keltner 27 Emotion Labels
 COWEN_27_EMOTIONS: Dict[int, str] = {
     1: "Admiration",
     2: "Adoration",
@@ -113,7 +114,6 @@ COWEN_27_EMOTIONS: Dict[int, str] = {
 }
 
 # Mapping of Cowen 27 emotions to 2D Circumplex space: (Valence [-1, 1], Arousal [-1, 1])
-# Based on affective psychology normative ratings (Cowen & Keltner 2017, Russell 1980)
 COWEN_VALENCE_AROUSAL: Dict[int, Tuple[float, float]] = {
     1:  (0.70, 0.30),   # Admiration: pos, moderate
     2:  (0.80, -0.10),  # Adoration: pos, low
