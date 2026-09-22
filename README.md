@@ -7,8 +7,9 @@
 
 Author: Dhruv Kithany  
 Institution: University of Wisconsin-Madison  
-Application: Exploratory Research Exercise: Computational Neuroengineering, Machine Learning & Geometric Data Analysis (Bhaskar Lab)  
+Topic: Computational Neuroengineering, Manifold Learning & Geometric Machine Learning  
 Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (*IEEE Access*, 2025)
+
 
 ---
 
@@ -221,7 +222,7 @@ PCA projection showing overlap between held-out empirical EEG test data and synt
 ## Repo Structure
 
 ```
-Research_Tryout/
+eeg-affect-geometry/
 ├── .gitignore                      # Excludes raw recordings & caches
 ├── LICENSE                         # MIT License
 ├── README.md                       # Documentation & research report
