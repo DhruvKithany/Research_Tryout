@@ -7,8 +7,8 @@
             "weighted_f1": 0.544650326111606,
             "cohen_kappa": 0.3638575461583199,
             "top_3_accuracy": 0.9811965811965812,
-            "fit_time_s": 1.37,
-            "inference_time_s": 0.027,
+            "fit_time_s": 9.13,
+            "inference_time_s": 0.1174,
             "model": "RandomForest"
         },
         {
@@ -18,8 +18,8 @@
             "weighted_f1": 0.49091276853800286,
             "cohen_kappa": 0.27934814475148084,
             "top_3_accuracy": 0.9669515669515669,
-            "fit_time_s": 7.05,
-            "inference_time_s": 0.0047,
+            "fit_time_s": 24.14,
+            "inference_time_s": 0.0179,
             "model": "MLP_NeuralNet"
         },
         {
@@ -29,8 +29,8 @@
             "weighted_f1": 0.5162087800074023,
             "cohen_kappa": 0.323925899536872,
             "top_3_accuracy": 0.9566951566951567,
-            "fit_time_s": 0.17,
-            "inference_time_s": 0.0278,
+            "fit_time_s": 0.86,
+            "inference_time_s": 0.1038,
             "model": "ExtraTrees"
         },
         {
@@ -40,8 +40,8 @@
             "weighted_f1": 0.3920681951863504,
             "cohen_kappa": 0.14418962783737577,
             "top_3_accuracy": 0.9037037037037037,
-            "fit_time_s": 0.06,
-            "inference_time_s": 0.002,
+            "fit_time_s": 0.27,
+            "inference_time_s": 0.0,
             "model": "Ridge"
         },
         {
@@ -51,8 +51,8 @@
             "weighted_f1": 0.39099143096806166,
             "cohen_kappa": 0.14638565839053763,
             "top_3_accuracy": 0.9133903133903134,
-            "fit_time_s": 1.67,
-            "inference_time_s": 0.0012,
+            "fit_time_s": 9.35,
+            "inference_time_s": 0.0,
             "model": "LogisticRegression"
         },
         {
@@ -62,8 +62,8 @@
             "weighted_f1": 0.2936068304908544,
             "cohen_kappa": 0.06398389649714409,
             "top_3_accuracy": 0.8142450142450143,
-            "fit_time_s": 0.02,
-            "inference_time_s": 0.0078,
+            "fit_time_s": 0.12,
+            "inference_time_s": 0.0343,
             "model": "NearestCentroid_Cosine"
         }
     ],
@@ -76,8 +76,8 @@
             "cohen_kappa": 0.28167230498574847,
             "top_3_accuracy": 0.6512820512820513,
             "top_5_accuracy": 0.7982905982905983,
-            "fit_time_s": 2.28,
-            "inference_time_s": 0.0699,
+            "fit_time_s": 12.37,
+            "inference_time_s": 0.279,
             "model": "RandomForest"
         },
         {
@@ -88,8 +88,8 @@
             "cohen_kappa": 0.2513349057017351,
             "top_3_accuracy": 0.6199430199430199,
             "top_5_accuracy": 0.8028490028490028,
-            "fit_time_s": 24.06,
-            "inference_time_s": 0.0094,
+            "fit_time_s": 65.45,
+            "inference_time_s": 0.0319,
             "model": "MLP_NeuralNet"
         },
         {
@@ -100,8 +100,8 @@
             "cohen_kappa": 0.23198166457747682,
             "top_3_accuracy": 0.5635327635327635,
             "top_5_accuracy": 0.7435897435897436,
-            "fit_time_s": 0.27,
-            "inference_time_s": 0.0407,
+            "fit_time_s": 1.76,
+            "inference_time_s": 0.1604,
             "model": "ExtraTrees"
         },
         {
@@ -112,8 +112,8 @@
             "cohen_kappa": 0.0888517077245835,
             "top_3_accuracy": 0.30142450142450145,
             "top_5_accuracy": 0.47977207977207975,
-            "fit_time_s": 4.15,
-            "inference_time_s": 0.0017,
+            "fit_time_s": 22.13,
+            "inference_time_s": 0.0153,
             "model": "LogisticRegression"
         },
         {
@@ -124,8 +124,8 @@
             "cohen_kappa": 0.07064638683300684,
             "top_3_accuracy": 0.28034188034188035,
             "top_5_accuracy": 0.4170940170940171,
-            "fit_time_s": 0.05,
-            "inference_time_s": 0.002,
+            "fit_time_s": 0.38,
+            "inference_time_s": 0.0158,
             "model": "Ridge"
         },
         {
@@ -136,8 +136,8 @@
             "cohen_kappa": 0.01716771623756641,
             "top_3_accuracy": 0.16866096866096866,
             "top_5_accuracy": 0.26894586894586897,
-            "fit_time_s": 0.02,
-            "inference_time_s": 0.0055,
+            "fit_time_s": 0.14,
+            "inference_time_s": 0.0319,
             "model": "NearestCentroid_Cosine"
         }
     ],

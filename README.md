@@ -1,4 +1,4 @@
-# Geometry of Affect: Decoding and Manifold Analysis of 27 Fine-Grained Emotions from Human EEG
+# MindMesh: High-Dimensional EEG Emotion Decoder & Manifold Analyzer
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -9,6 +9,7 @@ Author: Dhruv Kithany
 Institution: University of Wisconsin-Madison  
 Topic: Computational Neuroengineering, Manifold Learning & Geometric Machine Learning  
 Dataset: [EEGEmotions-27 Dataset](https://github.com/huytungst/EEGEmotions-27) (*IEEE Access*, 2025)
+
 
 
 ---
@@ -222,7 +223,7 @@ PCA projection showing overlap between held-out empirical EEG test data and synt
 ## Repo Structure
 
 ```
-eeg-affect-geometry/
+MindMesh/
 ├── .gitignore                      # Excludes raw recordings & caches
 ├── LICENSE                         # MIT License
 ├── README.md                       # Documentation & research report
@@ -270,8 +271,8 @@ eeg-affect-geometry/
 ### 1. Installation
 Clone the repository and install dependencies:
 ```bash
-git clone https://github.com/<your-username>/EEG-Affect-Geometry.git
-cd EEG-Affect-Geometry
+git clone https://github.com/DhruvKithany/MindMesh.git
+cd MindMesh
 
 # Install dependencies
 pip install -r requirements.txt

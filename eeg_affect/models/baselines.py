@@ -14,23 +14,27 @@ class CosineNearestCentroid(BaseEstimator, ClassifierMixin):
     def __init__(self, shrinkThreshold: Optional[float] = None, **kwargs):
         self.shrinkThreshold = kwargs.get("shrink_threshold", shrinkThreshold)
         self.shrink_threshold = self.shrinkThreshold
-        self.nc = NearestCentroid(metric="cosine", shrink_threshold=self.shrinkThreshold)
         self.classes_: Optional[np.ndarray] = None
+        self.centroids_: Optional[np.ndarray] = None
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> "CosineNearestCentroid":
         """Calculates the average feature center for each emotion class."""
-        self.nc.fit(X, y)
-        self.classes_ = self.nc.classes_
+        self.classes_ = np.unique(y)
+        centroids = []
+        for c in self.classes_:
+            centroids.append(np.mean(X[y == c], axis=0))
+        self.centroids_ = np.array(centroids)
         return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:
-        """Assigns each test point to the nearest emotion centroid."""
-        return self.nc.predict(X)
+        """Assigns each test point to the nearest emotion centroid by cosine similarity."""
+        proba = self.predictProba(X)
+        return self.classes_[np.argmax(proba, axis=1)]
 
     def predictProba(self, X: np.ndarray) -> np.ndarray:
         """Converts cosine similarities into class probabilities using softmax."""
         # Normalize vectors to unit length
-        normCentroids = self.nc.centroids_ / np.linalg.norm(self.nc.centroids_, axis=1, keepdims=True)
+        normCentroids = self.centroids_ / np.linalg.norm(self.centroids_, axis=1, keepdims=True)
         normX = X / (np.linalg.norm(X, axis=1, keepdims=True) + 1e-12)
 
         # Dot product of normalized vectors is cosine similarity in [-1, 1]

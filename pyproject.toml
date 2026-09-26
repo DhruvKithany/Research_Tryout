@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "eeg-affect"
+name = "mindmesh"
 version = "0.1.0"
-description = "Geometry of Affect: Decoding and Manifold Analysis of 27 Fine-Grained Emotional States from Human EEG"
+description = "MindMesh: High-Dimensional EEG Emotion Decoder & Manifold Analyzer"
 readme = "README.md"
 authors = [{ name = "Dhruv Kithany" }]
 license = { text = "MIT" }

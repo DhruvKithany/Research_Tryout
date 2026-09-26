@@ -179,9 +179,7 @@ mlpCowenTop5 = benchmarkMetrics["task_b_cowen27"][1]["top_5_accuracy"] * 100
 
 In machine learning and computational geometry, one big question is whether continuous biological signals capture complex human experiences like emotion. Most emotion classification papers treat brain signals as a simple 2-class or 4-class problem (like "happy vs. sad"). But human feelings are much richer than that. 
 
-Cowen and Keltner [-@cowen2017twenty] showed through massive self-report studies that human emotion is organized into at least **27 distinct categories** along a continuous semantic geometry.
-
-Here, we take raw scalp EEG data (14 electrodes, 128 Hz) across 88 participants and extract a **462-dimensional feature space** ($D = 462$) per trial. From a computer science and geometric ML standpoint, we want to answer three specific questions:
+Here, we take raw scalp EEG data (14 electrodes, 128 Hz) across 88 participants and extract a **462-dimensional feature space** ($D = 462$) per trial. We set out to investigate three core questions:
 
 1. **Topological Alignment & Intrinsic Dimension:** Does high-dimensional brain wave space actually reflect the geometry of psychological emotion models [@russell1980circumplex] when we run Representational Similarity Analysis (RSA) [@kriegeskorte2008representational]? And if we measure 462 features, what is the *true* non-linear intrinsic dimensionality of the underlying manifold [@facco2017estimating]?
 2. **Subject-Independent Decoding:** Can standard ML classifiers and neural networks decode 27 fine-grained emotions under a strict **Leave-Subjects-Out (LSO)** split where the test participants are completely unseen during training?
@@ -466,21 +464,19 @@ $$d_F^2 = \|\boldsymbol{\mu}_r - \boldsymbol{\mu}_s\|_2^2 + \operatorname{Tr}\le
 - **Calmness:** $d_F = 1263.00$
 - **Joy:** $d_F = 2405.31$
 
-The mean feature vectors achieved a Pearson correlation of $r > 0.98$ with real human data (@fig-generative). This shows that regularized Gaussian sampling gives us a fast, stable generative pipeline that avoids the mode collapse and training instability of GANs.
+## Part 5: Discussion & Future Work
 
-## Part 5: Research Directions for Dr. Bhaskar's Lab
-
-As a computer science student interested in geometric ML and computational biology, these findings open up exciting directions that directly connect to **Professor Dhananjay Bhaskar's research group** at UW-Madison:
+These findings suggest several promising directions for geometric deep learning and computational neuroscience:
 
 ### 1. Topological Data Analysis (TDA) on Multi-Channel Time-Series
 - **Persistent Homology of EEG Epochs:** Instead of just computing static power bands, we can build sliding-window Vietoris-Rips complexes directly on the raw 14-channel time-series to track 0D and 1D topological persistence barcodes (Betti numbers $\beta_0, \beta_1$) as emotions transition.
-- **Topological Loss Functions:** We can add a persistent homology penalty to our Bottleneck MLP loss function to force latent representations to preserve global loop structures.
+- **Topological Loss Functions:** Adding a persistent homology penalty to the neural network loss function could constrain latent representations to preserve global loop and void structures.
 
 ### 2. Geometric Deep Learning on Covariance Manifolds
-- **Riemannian Manifold Neural Networks:** EEG spatial covariance matrices $\mathbf{P} = \frac{1}{T} \mathbf{X}\mathbf{X}^\top$ live on the manifold of Symmetric Positive-Definite (SPD) matrices $\mathcal{S}_{++}^p$. Instead of flattening matrices into Euclidean vectors, we can use Riemannian geometry (like the Log-Euclidean Metric or Affine-Invariant Riemannian Metric) with SPDNet architectures.
-- **Graph Neural Networks (GNNs):** Treating the 14 electrodes as nodes in a dynamic graph where edge weights represent time-varying coherence or phase-locking values.
+- **Riemannian Manifold Neural Networks:** EEG spatial covariance matrices $\mathbf{P} = \frac{1}{T} \mathbf{X}\mathbf{X}^\top$ live on the manifold of Symmetric Positive-Definite (SPD) matrices $\mathcal{S}_{++}^p$. Rather than flattening matrices into Euclidean vectors, we can operate directly in Riemannian geometry using the Log-Euclidean Metric or Affine-Invariant Riemannian Metric with SPDNet architectures.
+- **Graph Neural Networks (GNNs):** Treating electrodes as nodes in a dynamic graph where edge weights represent time-varying coherence or phase-locking values across channels.
 
-### 3. Non-Linear Trajectory Inference
-- **PHATE & Diffusion Trajectories:** We can use tools like PHATE [@moon2019visualizing] to trace continuous trajectories between emotions, identifying the exact branch points where mixed emotional states (like bittersweet or nostalgic feelings) bifurcate into distinct categorical states.
+### 3. Continuous Trajectory Inference
+- **PHATE & Diffusion Trajectories:** Applying tools like PHATE [@moon2019visualizing] can help trace continuous trajectories between emotions, identifying the exact branch points where mixed affective states (such as bittersweet or nostalgic feelings) bifurcate into distinct categories.
 
 ## References
