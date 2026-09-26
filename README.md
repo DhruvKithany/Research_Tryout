@@ -1,9 +1,9 @@
 # MindMesh: High-Dimensional EEG Emotion Decoder & Manifold Analyzer
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code Style: Clean](https://img.shields.io/badge/code%20style-modular-green.svg)](https://github.com/)
-[![Tests](https://img.shields.io/badge/tests-15%20passed-success.svg)](tests/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-15%20passed-success.svg)](tests/run_tests.py)
+[![Code Style: Clean](https://img.shields.io/badge/code%20style-modular-green.svg)](eeg_affect/)
 
 Author: Dhruv Kithany  
 Institution: University of Wisconsin-Madison  
@@ -60,9 +60,7 @@ Using the newly released EEGEmotions-27 dataset (88 participants, 14 channels at
 +-----------------------------+         +-----------------------------+
 ```
 
----
-
-## Repo Diagram (What is actually included) (Key--> rendered quatro pdf (as a formal memo in the structure I have done in the past) is listed as "index.pdf")
+## Repository Overview & Architecture
 
 ```
                           +-----------------------------+
